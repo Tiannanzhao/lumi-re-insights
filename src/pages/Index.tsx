@@ -1,13 +1,51 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { DashboardLayout } from "@/components/DashboardLayout";
+import { KpiCard } from "@/components/KpiCard";
+import { RevenueChart } from "@/components/RevenueChart";
+import { CategoryBreakdown } from "@/components/CategoryBreakdown";
+import { TopProductsTable } from "@/components/TopProductsTable";
+import { ChannelsTable } from "@/components/ChannelsTable";
+import { RegionCards } from "@/components/RegionCards";
+import { kpiData } from "@/lib/mockData";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <DashboardLayout>
+      <div className="space-y-6 animate-fade-in">
+        {/* Page Header */}
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">Overview</h2>
+          <p className="text-sm text-muted-foreground">
+            Key metrics and performance insights
+          </p>
+        </div>
+
+        {/* KPI Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {kpiData.map((kpi) => (
+            <KpiCard key={kpi.label} {...kpi} />
+          ))}
+        </div>
+
+        {/* Charts Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <RevenueChart />
+          </div>
+          <CategoryBreakdown />
+        </div>
+
+        {/* Tables Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <TopProductsTable />
+          </div>
+          <RegionCards />
+        </div>
+
+        {/* Channels */}
+        <ChannelsTable />
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 
