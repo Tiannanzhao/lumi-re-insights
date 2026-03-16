@@ -8,7 +8,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Copy, Pin, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Copy, Pin, AlertTriangle, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ interface ExportReviewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   content: string;
-  action: "copy" | "pin";
+  action: "copy" | "pin" | "share";
   onConfirm: (editedContent: string) => void;
 }
 
@@ -42,13 +42,12 @@ export function ExportReviewDialog({
   const handleConfirm = () => {
     onConfirm(editedContent);
     onOpenChange(false);
-    toast({
-      title: action === "copy" ? "Copied to clipboard" : "Pinned",
-      description:
-        action === "copy"
-          ? "Reviewed content copied."
-          : "Reviewed analysis saved.",
-    });
+    const labels = {
+      copy: { title: "Copied to clipboard", desc: "Reviewed content copied." },
+      pin: { title: "Pinned", desc: "Reviewed analysis saved." },
+      share: { title: "Shared", desc: "Reviewed report copied to clipboard for sharing." },
+    };
+    toast({ title: labels[action].title, description: labels[action].desc });
   };
 
   return (
@@ -62,7 +61,7 @@ export function ExportReviewDialog({
             </div>
             <div>
               <DialogTitle className="text-sm">
-                Review before {action === "copy" ? "copying" : "pinning"}
+                Review before {action === "copy" ? "copying" : action === "pin" ? "pinning" : "sharing"}
               </DialogTitle>
               <DialogDescription className="text-xs mt-0.5">
                 Check for sensitive data. Edit or redact anything before
@@ -125,7 +124,7 @@ export function ExportReviewDialog({
             </button>
             <span className="text-[11px] text-muted-foreground leading-snug">
               I've reviewed this content and confirm it's safe to{" "}
-              {action === "copy" ? "copy to clipboard" : "save as a pin"}.
+              {action === "copy" ? "copy to clipboard" : action === "pin" ? "save as a pin" : "share externally"}.
             </span>
           </label>
         </div>
@@ -159,9 +158,13 @@ export function ExportReviewDialog({
               <>
                 <Copy className="h-3 w-3" /> Copy
               </>
-            ) : (
+            ) : action === "pin" ? (
               <>
                 <Pin className="h-3 w-3" /> Pin
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3 w-3" /> Share
               </>
             )}
           </Button>

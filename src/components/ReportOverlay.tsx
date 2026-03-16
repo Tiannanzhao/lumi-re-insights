@@ -1,6 +1,8 @@
-import { ArrowLeft, TrendingDown, TrendingUp, FileText, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, TrendingDown, Share2, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
 import { useSidekick } from "@/contexts/SidekickContext";
 import type { ReportData } from "@/lib/mockReportData";
+import { ExportReviewDialog } from "@/components/ExportReviewDialog";
 
 const findingIcon = {
   evidence: <CheckCircle2 className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />,
@@ -16,14 +18,38 @@ const findingLabel = {
 
 export function ReportOverlay() {
   const { activeReport, clearActiveReport } = useSidekick();
+  const [shareOpen, setShareOpen] = useState(false);
+
   if (!activeReport) return null;
   const r = activeReport as ReportData;
 
   const maxImpact = Math.max(...r.regionImpacts.map((ri) => Math.abs(ri.impact)));
 
+  const reportText = [
+    r.title,
+    `Generated ${r.generatedAt}`,
+    "",
+    "EXECUTIVE SUMMARY",
+    r.executiveSummary,
+    "",
+    "KPI COMPARISON (Q2 → Q3)",
+    ...r.kpis.map((k) => `${k.label}: ${k.q2} → ${k.q3} (${k.change})`),
+    "",
+    "REGIONAL IMPACT",
+    ...r.regionImpacts.map((ri) => `${ri.region}: ${ri.percentage}`),
+    "",
+    "CATEGORY PERFORMANCE",
+    ...r.categoryChanges.map((c) => `${c.category}: ${c.q2Revenue} → ${c.q3Revenue} (${c.change})`),
+    "",
+    "KEY FINDINGS",
+    ...r.keyFindings.map((f) => `[${f.type.toUpperCase()}] ${f.text}`),
+    "",
+    "Data Sources: " + r.dataSources.join(", "),
+  ].join("\n");
+
   return (
     <div className="h-full overflow-auto p-6 space-y-6">
-      {/* Header — matches dashboard page header style */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <button
@@ -38,15 +64,22 @@ export function ReportOverlay() {
             Generated {r.generatedAt} by AI Sidekick
           </p>
         </div>
+        <button
+          onClick={() => setShareOpen(true)}
+          className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <Share2 className="h-3.5 w-3.5" />
+          Share Report
+        </button>
       </div>
 
-      {/* Executive Summary — same card style as KpiCard / AiSummary */}
+      {/* Executive Summary */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-2">Executive Summary</p>
         <p className="text-sm text-muted-foreground leading-relaxed">{r.executiveSummary}</p>
       </div>
 
-      {/* KPI Comparison — 4-col grid matching KpiCard layout */}
+      {/* KPI Comparison */}
       <div>
         <p className="label-caps mb-3">Q2 vs Q3 Comparison</p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -64,7 +97,7 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Regional Impact — horizontal bar chart in card */}
+      {/* Regional Impact */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-4">Regional Impact</p>
         <div className="space-y-3">
@@ -83,7 +116,7 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Category Changes — table in card, matching TopProductsTable / ChannelsTable style */}
+      {/* Category Changes */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-4">Category Performance</p>
         <div className="overflow-x-auto">
@@ -128,11 +161,22 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Data Sources footer */}
+      {/* Data Sources */}
       <div className="text-xs text-muted-foreground border-t border-border pt-4 pb-2">
         <span className="font-medium text-foreground">Data Sources:</span>{" "}
         {r.dataSources.join(" · ")}
       </div>
+
+      {/* Share Export Review Dialog */}
+      <ExportReviewDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        content={reportText}
+        action="share"
+        onConfirm={(edited) => {
+          navigator.clipboard.writeText(edited);
+        }}
+      />
     </div>
   );
 }
