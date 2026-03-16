@@ -158,9 +158,13 @@ export function ExportReviewDialog({
               <>
                 <Copy className="h-3 w-3" /> Copy
               </>
-            ) : (
+            ) : action === "pin" ? (
               <>
                 <Pin className="h-3 w-3" /> Pin
+              </>
+            ) : (
+              <>
+                <Share2 className="h-3 w-3" /> Share
               </>
             )}
           </Button>
