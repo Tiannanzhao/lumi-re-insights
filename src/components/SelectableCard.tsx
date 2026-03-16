@@ -9,16 +9,19 @@ interface SelectableCardProps {
 }
 
 export function SelectableCard({ children, cardRef, className }: SelectableCardProps) {
-  const { selectMode, selectCard, selectedCard } = useSidekick();
+  const { selectMode, selectCard, selectedCard, highlightedCardId } = useSidekick();
   const isSelected = selectedCard?.id === cardRef.id;
+  const isHighlighted = highlightedCardId === cardRef.id;
 
   return (
     <div
+      id={`selectable-card-${cardRef.id}`}
       className={cn(
         "relative transition-all duration-200",
         selectMode && "cursor-crosshair",
         selectMode && "hover:ring-2 hover:ring-primary/50 hover:ring-offset-2 rounded-xl",
         isSelected && "ring-2 ring-primary ring-offset-2 rounded-xl",
+        isHighlighted && "rounded-xl animate-card-highlight",
         className
       )}
       onClick={() => {
