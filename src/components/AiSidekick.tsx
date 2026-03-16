@@ -108,6 +108,14 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
 
   if (!open) return null;
 
+  if (showFullHistory) {
+    return (
+      <div className="h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col shrink-0">
+        <ChatHistoryFullPanel onBack={() => setShowFullHistory(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col shrink-0">
       {/* Header */}
