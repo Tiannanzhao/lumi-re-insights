@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AiSidekick } from "@/components/AiSidekick";
+import { ReportOverlay } from "@/components/ReportOverlay";
 import { useSidekick } from "@/contexts/SidekickContext";
 import { Bell, Search } from "lucide-react";
 
