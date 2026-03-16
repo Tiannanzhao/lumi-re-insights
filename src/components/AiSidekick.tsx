@@ -10,6 +10,7 @@ import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
 import { MessageActions } from "./MessageActions";
 import { SuggestedNextCheck } from "./SuggestedNextCheck";
+import { ProcessingStages } from "./ProcessingStages";
 import {
   overviewCardResponses,
   pageResponses,
