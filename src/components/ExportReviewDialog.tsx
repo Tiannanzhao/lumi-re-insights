@@ -42,13 +42,12 @@ export function ExportReviewDialog({
   const handleConfirm = () => {
     onConfirm(editedContent);
     onOpenChange(false);
-    toast({
-      title: action === "copy" ? "Copied to clipboard" : "Pinned",
-      description:
-        action === "copy"
-          ? "Reviewed content copied."
-          : "Reviewed analysis saved.",
-    });
+    const labels = {
+      copy: { title: "Copied to clipboard", desc: "Reviewed content copied." },
+      pin: { title: "Pinned", desc: "Reviewed analysis saved." },
+      share: { title: "Shared", desc: "Reviewed report copied to clipboard for sharing." },
+    };
+    toast({ title: labels[action].title, description: labels[action].desc });
   };
 
   return (
