@@ -83,7 +83,6 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   };
 
     return (
-      {/* Panel - fixed to right, no overlay */}
       <div
         className={cn(
           "fixed right-0 top-0 z-30 h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col transition-transform duration-300 ease-out",
