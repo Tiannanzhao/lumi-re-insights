@@ -1,10 +1,55 @@
 import { useState } from "react";
 import { CitationPill } from "./CitationPill";
 import { cn } from "@/lib/utils";
+import { TrendingUp, ExternalLink } from "lucide-react";
 
 interface DisputeState {
   [key: string]: "idle" | "input" | "reviewing";
 }
+
+/* ─── Benchmark data ─── */
+interface BenchmarkItem {
+  label: string;
+  value: string;
+  comparison: string;
+  status: "above" | "below" | "at";
+  sourceUrl?: string;
+  sourceName?: string;
+}
+
+const defaultBenchmarks: BenchmarkItem[] = [
+  {
+    label: "Industry avg. Q3 revenue change",
+    value: "−3.1%",
+    comparison: "You: −14.3%",
+    status: "below",
+    sourceUrl: "https://www.bain.com/insights/luxury-market-study",
+    sourceName: "Bain Luxury Report 2024",
+  },
+  {
+    label: "Avg. e-commerce CVR (luxury)",
+    value: "2.8%",
+    comparison: "You: 2.2%",
+    status: "below",
+    sourceUrl: "https://www.statista.com/statistics/luxury-ecommerce-cvr",
+    sourceName: "Statista E-Commerce Benchmark",
+  },
+  {
+    label: "Avg. bounce rate (luxury retail)",
+    value: "45%",
+    comparison: "You: 58%",
+    status: "below",
+    sourceName: "SimilarWeb Industry Report",
+  },
+  {
+    label: "Fragrance category growth (global)",
+    value: "+4%",
+    comparison: "You: +7%",
+    status: "above",
+    sourceUrl: "https://www.euromonitor.com/fragrances",
+    sourceName: "Euromonitor Fragrances 2024",
+  },
+];
 
 export function CitationContent() {
   const [disputes, setDisputes] = useState<DisputeState>({});
@@ -53,6 +98,7 @@ export function CitationContent() {
           <CitationPill
             type="external"
             label="Traffic Analytics"
+            externalUrl="https://analytics.example.com/report/apac-jul-2024"
             sourceOverrides={{
               name: "Traffic Analytics Platform",
               subtitle: "Session & engagement metrics · Jul 2024",
@@ -63,6 +109,52 @@ export function CitationContent() {
             }}
           />
         </p>
+      </div>
+
+      {/* BENCHMARK */}
+      <div className="border-l-[3px] border-emerald-400 bg-emerald-50/60 rounded-r-lg p-3 space-y-3">
+        <div className="flex items-center gap-1.5 mb-2">
+          <TrendingUp className="h-3.5 w-3.5 text-emerald-700" />
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">Benchmarks</p>
+        </div>
+
+        <div className="space-y-2.5">
+          {defaultBenchmarks.map((bm, i) => (
+            <div key={i} className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-foreground font-medium leading-snug">{bm.label}</p>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span className="text-xs font-mono text-muted-foreground">{bm.value}</span>
+                  <span className={cn(
+                    "text-[10px] font-medium px-1.5 py-0.5 rounded",
+                    bm.status === "above" && "bg-emerald-100 text-emerald-700",
+                    bm.status === "below" && "bg-red-100 text-red-700",
+                    bm.status === "at" && "bg-slate-100 text-slate-600",
+                  )}>
+                    {bm.comparison}
+                  </span>
+                </div>
+                {bm.sourceName && (
+                  <div className="flex items-center gap-1 mt-1">
+                    {bm.sourceUrl ? (
+                      <a
+                        href={bm.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                      >
+                        <ExternalLink className="h-2.5 w-2.5" />
+                        {bm.sourceName}
+                      </a>
+                    ) : (
+                      <span className="text-[10px] text-muted-foreground italic">{bm.sourceName}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ASSUMPTION */}
@@ -120,6 +212,75 @@ export function CitationContent() {
   );
 }
 
+/* ─── Assumption block with dispute flow ─── */
+function AssumptionBlock({
+  id,
+  text,
+  disputes,
+  disputeText,
+  setDisputeText,
+  onDispute,
+  onSubmitDispute,
+}: {
+  id: string;
+  text: string;
+  disputes: DisputeState;
+  disputeText: Record<string, string>;
+  setDisputeText: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  onDispute: (id: string) => void;
+  onSubmitDispute: (id: string) => void;
+}) {
+  const state = disputes[id] || "idle";
+
+  return (
+    <div>
+      <p className="text-sm text-foreground leading-relaxed">
+        {text}
+        <CitationPill type="inferred" label="Inferred" onDispute={() => onDispute(id)} />
+      </p>
+
+      {state === "idle" && (
+        <div className="flex justify-end gap-2 mt-1.5">
+          <button className="text-xs border border-slate-300 text-slate-600 rounded px-2 py-0.5 hover:bg-slate-100 transition-colors">
+            ✓ Confirm
+          </button>
+          <button
+            onClick={() => onDispute(id)}
+            className="text-xs border border-slate-300 text-slate-600 rounded px-2 py-0.5 hover:bg-slate-100 transition-colors"
+          >
+            ✗ Dispute
+          </button>
+        </div>
+      )}
+
+      {state === "input" && (
+        <div className="mt-2 space-y-2">
+          <input
+            type="text"
+            placeholder="What's incorrect about this?"
+            value={disputeText[id] || ""}
+            onChange={(e) => setDisputeText((prev) => ({ ...prev, [id]: e.target.value }))}
+            className="w-full border border-slate-300 rounded-lg text-sm p-2 focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={() => onSubmitDispute(id)}
+              className="bg-slate-900 text-white text-xs rounded px-3 py-1 hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
+
+      {state === "reviewing" && (
+        <div className={cn("mt-2 text-xs text-amber-700 italic animate-pulse")}>
+          ↻ Reviewing based on your input…
+        </div>
+      )}
+    </div>
+  );
+}
 /* ─── Assumption block with dispute flow ─── */
 function AssumptionBlock({
   id,
