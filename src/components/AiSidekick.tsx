@@ -230,6 +230,11 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     }
   }, [open]);
 
+  const isCitationTrigger = (text: string) => {
+    const lower = text.toLowerCase();
+    return lower.includes("revenue") && (lower.includes("dip") || lower.includes("decline") || lower.includes("drop") || lower.includes("q3") || lower.includes("down"));
+  };
+
   const sendMessage = (overrideText?: string) => {
     const text = (overrideText || input).trim();
     if (!text || isTyping) return;
@@ -240,9 +245,15 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     setInput("");
     setIsTyping(true);
 
+    const shouldCite = isCitationTrigger(text);
+
     setTimeout(() => {
       const response = getContextMockResponse(ref, text);
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
+      setMessages((prev) => [...prev, {
+        role: "assistant",
+        content: response,
+        citationType: shouldCite ? "citation" : "normal",
+      }]);
       setIsTyping(false);
     }, 800 + Math.random() * 600);
   };
