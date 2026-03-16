@@ -211,6 +211,14 @@ export function CitationContent() {
     </div>
   );
 }
+
+/* ─── Assumption block with dispute flow ─── */
+function AssumptionBlock({
+  id,
+  text,
+  disputes,
+  disputeText,
+  setDisputeText,
   onDispute,
   onSubmitDispute,
 }: {
