@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { useSidekick } from "@/contexts/SidekickContext";
 
 export type CitationType = "internal" | "external" | "inferred" | "none";
 
@@ -97,6 +98,15 @@ const pillIcons: Record<CitationType, string> = {
   none: "⚠",
 };
 
+// Map pill labels to dashboard card IDs
+const labelToCardId: Record<string, string> = {
+  "Sales DB": "regional-performance",
+  "Category Report Q3": "category-breakdown",
+  "Traffic Analytics": "channel-performance",
+  "Revenue Trend": "revenue-chart",
+  "Top Products": "top-products",
+};
+
 export interface CitationPillProps {
   type: CitationType;
   label: string;
@@ -105,6 +115,7 @@ export interface CitationPillProps {
   externalQuote?: ExternalQuote;
   reasoningSteps?: ReasoningStep[];
   onDispute?: () => void;
+  targetCardId?: string;
 }
 
 export function CitationPill({
@@ -115,9 +126,17 @@ export function CitationPill({
   externalQuote,
   reasoningSteps,
   onDispute,
+  targetCardId,
 }: CitationPillProps) {
   const info = { ...sourceInfoMap[type](label), ...sourceOverrides };
   const [popOpen, setPopOpen] = useState(false);
+  const { highlightCard } = useSidekick();
+
+  const handleOpenInOverview = () => {
+    const cardId = targetCardId || labelToCardId[label] || "regional-performance";
+    setPopOpen(false);
+    highlightCard(cardId);
+  };
 
   return (
     <Popover open={popOpen} onOpenChange={setPopOpen}>
@@ -139,7 +158,7 @@ export function CitationPill({
         sideOffset={6}
         collisionPadding={12}
       >
-        {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} />}
+        {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} onOpenInOverview={handleOpenInOverview} />}
         {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} />}
         {type === "inferred" && (
           <InferredPopover
@@ -160,7 +179,7 @@ export function CitationPill({
 /* ═══════════════════════════════════════════
    INTERNAL SOURCE POPOVER
    ═══════════════════════════════════════════ */
-function InternalPopover({ info, data }: { info: SourceInfo; data: DataRow[] }) {
+function InternalPopover({ info, data, onOpenInOverview }: { info: SourceInfo; data: DataRow[]; onOpenInOverview?: () => void }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-semibold text-slate-900">{info.name}</p>
@@ -183,7 +202,10 @@ function InternalPopover({ info, data }: { info: SourceInfo; data: DataRow[] }) 
       ))}
 
       <div className="border-t border-slate-200 my-2" />
-      <button className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75">
+      <button
+        onClick={onOpenInOverview}
+        className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75"
+      >
         Open in Overview tab ↗
       </button>
     </div>

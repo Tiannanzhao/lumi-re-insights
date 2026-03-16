@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from "react";
 
 export interface CardReference {
   id: string;
@@ -15,6 +15,11 @@ interface SidekickContextValue {
   sidekickOpen: boolean;
   setSidekickOpen: (v: boolean) => void;
   toggleSidekick: () => void;
+  highlightedCardId: string | null;
+  highlightCard: (cardId: string) => void;
+  showBackToAnalysis: boolean;
+  setShowBackToAnalysis: (v: boolean) => void;
+  analysisScrollRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const SidekickContext = createContext<SidekickContextValue | null>(null);
@@ -23,6 +28,9 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedCard, setSelectedCard] = useState<CardReference | null>(null);
   const [sidekickOpen, setSidekickOpen] = useState(false);
+  const [highlightedCardId, setHighlightedCardId] = useState<string | null>(null);
+  const [showBackToAnalysis, setShowBackToAnalysis] = useState(false);
+  const analysisScrollRef = useRef<HTMLDivElement | null>(null);
 
   const selectCard = useCallback((card: CardReference) => {
     setSelectedCard(card);
@@ -37,6 +45,20 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
     setSidekickOpen((v) => !v);
   }, []);
 
+  const highlightCard = useCallback((cardId: string) => {
+    setHighlightedCardId(cardId);
+    setShowBackToAnalysis(true);
+    // Scroll the card into view
+    setTimeout(() => {
+      const el = document.getElementById(`selectable-card-${cardId}`);
+      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+    // Clear highlight after 2s
+    setTimeout(() => {
+      setHighlightedCardId(null);
+    }, 2000);
+  }, []);
+
   return (
     <SidekickContext.Provider
       value={{
@@ -48,6 +70,11 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
         sidekickOpen,
         setSidekickOpen,
         toggleSidekick,
+        highlightedCardId,
+        highlightCard,
+        showBackToAnalysis,
+        setShowBackToAnalysis,
+        analysisScrollRef,
       }}
     >
       {children}

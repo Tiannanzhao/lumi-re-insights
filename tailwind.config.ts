@@ -102,11 +102,17 @@ export default {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        "card-highlight": {
+          "0%": { boxShadow: "0 0 0 0 rgba(59, 130, 246, 0.3)", backgroundColor: "rgba(239, 246, 255, 0.6)" },
+          "50%": { boxShadow: "0 0 0 4px rgba(59, 130, 246, 0.15)", backgroundColor: "rgba(239, 246, 255, 0.4)" },
+          "100%": { boxShadow: "0 0 0 0 transparent", backgroundColor: "transparent" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.4s ease-out forwards",
+        "card-highlight": "card-highlight 2s ease-out forwards",
       },
     },
   },
