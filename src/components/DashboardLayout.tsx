@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AiSidekick } from "@/components/AiSidekick";
+import { useSidekick } from "@/contexts/SidekickContext";
 import { Bell, Search } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -9,13 +9,13 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const [sidekickOpen, setSidekickOpen] = useState(false);
+  const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode } = useSidekick();
 
   return (
     <SidebarProvider>
       <div className="h-screen flex w-full overflow-hidden">
         <AppSidebar
-          onToggleSidekick={() => setSidekickOpen((v) => !v)}
+          onToggleSidekick={toggleSidekick}
           sidekickOpen={sidekickOpen}
         />
         <div className="flex-1 flex flex-col min-w-0 h-screen">
@@ -43,7 +43,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </header>
           <div className="flex-1 flex min-h-0">
-            <main className="flex-1 p-6 overflow-auto bg-primary-foreground">
+            <main className={`flex-1 p-6 overflow-auto bg-primary-foreground transition-all ${selectMode ? "cursor-crosshair" : ""}`}>
               {children}
             </main>
             <AiSidekick open={sidekickOpen} onClose={() => setSidekickOpen(false)} />
