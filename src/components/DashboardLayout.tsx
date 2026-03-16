@@ -10,7 +10,7 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode } = useSidekick();
+  const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode, activeReport } = useSidekick();
 
   return (
     <SidebarProvider defaultOpen={false}>
