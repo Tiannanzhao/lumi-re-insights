@@ -82,6 +82,11 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     return lower.includes("revenue") && (lower.includes("dip") || lower.includes("decline") || lower.includes("drop") || lower.includes("q3") || lower.includes("down"));
   };
 
+  const isReportTrigger = (text: string) => {
+    const lower = text.toLowerCase();
+    return (lower.includes("report") || lower.includes("报表") || lower.includes("报告")) && (lower.includes("revenue") || lower.includes("q3") || lower.includes("decline") || lower.includes("下降"));
+  };
+
   const sendMessage = (overrideText?: string) => {
     const text = (overrideText || input).trim();
     if (!text || isTyping) return;
