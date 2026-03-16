@@ -1,11 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
 import ReactMarkdown from "react-markdown";
 import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
 import { SuggestedNextCheck } from "./SuggestedNextCheck";
+import {
+  overviewCardResponses,
+  pageResponses,
+  getGenericResponse,
+  pageSuggestedQuestions,
+} from "@/lib/sidekickResponses";
 
 interface Message {
   role: "user" | "assistant";
@@ -14,197 +21,25 @@ interface Message {
   citationType?: "citation" | "normal";
 }
 
-const contextResponses: Record<string, Record<string, string>> = {
-  "Total Revenue": {
-    default: `### Total Revenue Deep Dive
-
-**Current**: $1.8M (down 14.3% QoQ)
-
-**Reasons for decline**:
-1. **Footwear stockout** — Suede Ankle Boot (LUM-FW-007) out of stock, costing ~$48K in lost revenue
-2. **Middle East contraction** — Region accounts for 11% of revenue but dropped -15.1%, est. loss ~$35K
-3. **Paid Social ROI decline** — CVR fell from 3.1% to 2.2%, driving up acquisition costs
-4. **Seasonal factors** — Q3 is traditionally slow for luxury, AOV dropped from $286 to $262
-
-**Recommendations**:
-- Urgently restock Suede Ankle Boot and Cashmere Overcoat
-- Pause underperforming Paid Social campaigns, shift budget to Email (CVR 4.1%)
-- Increase Fragrance category promotion (only growing category)`,
-    reason: `Revenue declined 14.3% due to:
-
-1. **Supply chain issues** (~30% impact): 2 core products out of stock
-2. **Regional weakness** (~25% impact): Middle East -15.1%, Europe -12.3%
-3. **Channel inefficiency** (~25% impact): Paid Social CVR dropped to 2.2%
-4. **Seasonal effects** (~20% impact): Q3 luxury slowdown`,
-  },
-  Orders: {
-    default: `### Order Volume Analysis
-
-**Current**: 6,210 orders (down 11.7% QoQ)
-
-**Key findings**:
-- Jul 2,300 → Aug 2,080 → Sep 1,830, declining month-over-month
-- Stockouts affected ~420 orders (Suede Ankle Boot + Cashmere Overcoat)
-- Paid Social channel saw the steepest order decline
-- Email channel share grew, but volume insufficient to offset losses
-
-**Recommendation**: Prioritize restocking while optimizing Paid Social audience targeting`,
-  },
-  "Avg. Order Value": {
-    default: `### Average Order Value Analysis
-
-**Current**: $262 (down 8.1% QoQ)
-
-**Reasons for decline**:
-- High-AOV products out of stock (Suede Ankle Boot $350, Cashmere Overcoat $503)
-- Accessories share increased (lower price point), dragging down overall AOV
-- More frequent promotions with deeper discounts
-
-**Recommendation**: Launch high-value product bundles to boost cross-sell rate`,
-  },
-  "Conversion Rate": {
-    default: `### Conversion Rate Analysis
-
-**Current**: 2.68% (down 0.56pp QoQ)
-
-**Reasons for decline**:
-- Paid Social traffic quality dropped (CVR only 2.2%)
-- Key product pages showing "Out of Stock" hurting purchase intent
-- Landing page bounce rate up 12%
-
-**By channel**:
-| Channel | CVR |
-|---------|-----|
-| Email | 4.1% ✅ |
-| Direct | 3.4% |
-| Organic | 3.1% |
-| Paid Social | 2.2% ⚠️ |
-| Referral | 1.6% ⚠️ |
-
-**Recommendation**: Optimize Paid Social landing pages, increase Email marketing frequency`,
-  },
-  "Revenue Trend": {
-    default: `### Revenue Trend Analysis
-
-**Overview**: Q3 revenue in continuous decline
-- Jul: $680K → Aug: $620K (-8.8%) → Sep: $510K (-17.7%)
-
-**Why September accelerated**:
-1. Two core products went out of stock simultaneously
-2. Middle East promotional campaigns outpaced by competitors
-3. Paid Social ad fatigue — both CTR and CVR declining
-
-**Forecast**: Without intervention, October revenue estimated at $450-480K`,
-  },
-  "Category Breakdown": {
-    default: `### Category Structure Analysis
-
-| Category | Revenue | Share | Trend |
-|----------|---------|-------|-------|
-| Handbags | $576K | 32% | Stable |
-| Ready-to-Wear | $450K | 25% | Slight decline |
-| Footwear | $360K | 20% | ⚠️ Heavily impacted by stockouts |
-| Accessories | $252K | 14% | Stable |
-| Fragrance | $162K | 9% | ✅ Growing against trend |
-
-**Recommendations**:
-- Urgently restock Footwear — estimated +$50K/month once restored
-- Increase Fragrance investment, target Q4 share of 12%`,
-  },
-  "Top Products": {
-    default: `### Product Performance Analysis
-
-**Top performers**:
-- Classique Leather Tote: $86.2K (stable supply)
-- Monogram Belt: $58.1K (high volume, 581 units)
-
-**Needs attention** ⚠️:
-- **Suede Ankle Boot**: Out of stock, contributed $48.7K last period
-- **Cashmere Overcoat**: Out of stock, contributed $31.2K last period
-- Silk Midi Dress: Low inventory warning
-
-**Estimated stockout loss**: ~$80K/period, representing 4.4% of total revenue`,
-  },
-  "Regional Performance": {
-    default: `### Regional Performance Analysis
-
-| Region | Revenue | Share | Growth |
-|--------|---------|-------|--------|
-| North America | $685K | 38% | -9.6% |
-| Europe | $558K | 31% | -12.3% |
-| Asia Pacific | $360K | 20% | -5.8% ✅ |
-| Middle East | $197K | 11% | -15.1% ⚠️ |
-
-**Middle East deep dive**:
-- Competitors increased Q3 discount intensity
-- Local holiday marketing not executed in time
-- Logistics delays impacting repeat purchase rate
-
-**Asia Pacific relatively stable**: Japan & Korea Fragrance demand growing significantly`,
-  },
-  "Channel Performance": {
-    default: `### Channel Efficiency Analysis
-
-**Most efficient channels**:
-- **Email**: CVR 4.1%, 34K sessions contributing $210K, highest ROI
-- **Direct**: CVR 3.4%, 92K sessions contributing $720K
-
-**Channels needing optimization**:
-- **Paid Social**: CVR only 2.2%, 51K sessions but only $285K revenue
-  - Ad creative refresh frequency insufficient
-  - Audience targeting too broad
-  - Recommend A/B testing new creatives, narrowing audience
-
-- **Referral**: CVR 1.6%, need to evaluate partner quality`,
-  },
-  "AI Summary": {
-    default: `This AI Summary was auto-generated based on full Q3 data. It covers the following dimensions:
-
-1. **Revenue decline**: -14.3% QoQ, mainly driven by supply chain and channel efficiency
-2. **Category risk**: Footwear stockout is the single biggest factor
-3. **Regional variance**: Middle East saw the steepest drop, Asia Pacific relatively stable
-4. **Channel insight**: Paid Social needs strategy adjustment
-5. **Growth opportunity**: Fragrance category growing against the trend
-
-To get a deeper analysis on any specific area, select the corresponding Dashboard card and ask a question.`,
-  },
-};
-
-function getContextMockResponse(cardLabel: string | null, input: string): string {
-  if (cardLabel && contextResponses[cardLabel]) {
-    const cardResponses = contextResponses[cardLabel];
+function getContextMockResponse(cardLabel: string | null, input: string, pathname: string): string {
+  // If a card is selected, use card-specific responses
+  if (cardLabel && overviewCardResponses[cardLabel]) {
+    const cardResponses = overviewCardResponses[cardLabel];
     for (const [key, response] of Object.entries(cardResponses)) {
       if (key !== "default" && input.toLowerCase().includes(key.toLowerCase())) {
         return response;
       }
     }
-    return cardResponses.default || getMockResponse(input);
+    return cardResponses.default || getGenericResponse(input);
   }
-  return getMockResponse(input);
-}
 
-function getMockResponse(input: string): string {
-  const lower = input.toLowerCase();
-  if (lower.includes("revenue")) {
-    return "Q3 total revenue was **$1.8M**, down 14.3% QoQ. Primarily dragged down by the Footwear category and Middle East market. Consider focusing on the Fragrance category's growth potential.";
+  // If on a sub-page, use page-specific responses
+  const pageHandler = pageResponses[pathname];
+  if (pageHandler) {
+    return pageHandler(input);
   }
-  if (lower.includes("product")) {
-    return "Among top products, **Suede Ankle Boot** is out of stock, severely impacting Footwear performance. **Signature Tote** and **Cashmere Blend Scarf** remain stable — recommend increasing restock priority.";
-  }
-  if (lower.includes("channel")) {
-    return "**Paid Social** CVR is only 2.2%, the lowest across all channels. **Organic Search** and **Email** are the best performers — recommend reallocating marketing budget.";
-  }
-  if (lower.includes("region")) {
-    return "**Middle East** saw the steepest decline (-15.1%), while **North America** remained relatively stable. Recommend investigating Middle East decline — likely tied to increased competition and seasonal factors.";
-  }
-  return `Based on current Dashboard data, here are the key findings:
 
-1. **Revenue trend**: Q3 revenue declined 14.3% QoQ, from $2.1M to $1.8M
-2. **Category performance**: Footwear most impacted, Suede Ankle Boot out of stock
-3. **Regional analysis**: Middle East saw the steepest drop (-15.1%), needs attention
-4. **Channel efficiency**: Paid Social CVR dropped to 2.2%, ROI needs reassessment
-
-Consider the Fragrance category's counter-trend growth (7% → 9%) as an investment opportunity.`;
+  return getGenericResponse(input);
 }
 
 interface AiSidekickProps {
@@ -220,6 +55,9 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis } = useSidekick();
   const topRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  const currentQuestions = pageSuggestedQuestions[location.pathname] || pageSuggestedQuestions["/"];
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -249,7 +87,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     const shouldCite = isCitationTrigger(text) || !!ref;
 
     setTimeout(() => {
-      const response = getContextMockResponse(ref, text);
+      const response = getContextMockResponse(ref, text, location.pathname);
       setMessages((prev) => [...prev, {
         role: "assistant",
         content: response,
@@ -317,23 +155,18 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
             </div>
-            <h3 className="text-sm font-semibold text-foreground mb-1">Ask anything about your Dashboard</h3>
-            <p className="text-xs text-muted-foreground mb-4">I can help analyze revenue trends, product performance, channel efficiency, and more</p>
+            <h3 className="text-sm font-semibold text-foreground mb-1">Ask anything about your data</h3>
+            <p className="text-xs text-muted-foreground mb-4">I'll show what I can find, flag what I'm unsure about, and suggest where to look next.</p>
 
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 border border-border mb-6 max-w-[280px]">
               <MousePointer2 className="h-3.5 w-3.5 text-primary shrink-0" />
               <p className="text-[11px] text-muted-foreground text-left">
-                Click <span className="font-medium text-foreground">Select Card</span> below to reference any Dashboard component in your question
+                Click <span className="font-medium text-foreground">Select Card</span> below to reference any component in your question
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-2 w-full max-w-[280px]">
-              {[
-                "Why did revenue dip in Q3?",
-                "Which products need attention?",
-                "How efficient are the channels?",
-                "How are regions performing?",
-              ].map((q) => (
+              {currentQuestions.map((q) => (
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
