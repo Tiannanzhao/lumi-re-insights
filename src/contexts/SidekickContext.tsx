@@ -46,6 +46,10 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
   const analysisScrollRef = useRef<HTMLDivElement | null>(null);
   const [dashboardFilter, setDashboardFilter] = useState<DashboardFilter>({});
   const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
+  const [activeReport, setActiveReportState] = useState<ReportData | null>(null);
+
+  const setActiveReport = useCallback((r: ReportData) => setActiveReportState(r), []);
+  const clearActiveReport = useCallback(() => setActiveReportState(null), []);
 
   const clearDashboardFilter = useCallback(() => {
     setDashboardFilter({});
