@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
-import { ChatHistory } from "./ChatHistory";
+import { ChatHistory, ChatHistoryFullPanel } from "./ChatHistory";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
@@ -51,6 +51,7 @@ interface AiSidekickProps {
 export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [showFullHistory, setShowFullHistory] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -107,6 +108,14 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
 
   if (!open) return null;
 
+  if (showFullHistory) {
+    return (
+      <div className="h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col shrink-0">
+        <ChatHistoryFullPanel onBack={() => setShowFullHistory(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col shrink-0">
       {/* Header */}
@@ -123,7 +132,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </span>
         </div>
         <div className="flex items-center gap-1">
-          <ChatHistory />
+          <ChatHistory onExpandFullPanel={() => setShowFullHistory(true)} />
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
