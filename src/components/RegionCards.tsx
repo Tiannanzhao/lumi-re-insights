@@ -3,7 +3,7 @@ import { TrendingUp } from "lucide-react";
 
 export function RegionCards() {
   return (
-    <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
       <h3 className="text-sm font-semibold text-foreground mb-1">Regional Performance</h3>
       <p className="text-xs text-muted-foreground mb-5">Revenue by region</p>
       <div className="space-y-3">
