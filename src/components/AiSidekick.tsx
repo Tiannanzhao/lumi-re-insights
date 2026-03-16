@@ -82,13 +82,11 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     }
   };
 
+    if (!open) return null;
+
     return (
-      <div
-        className={cn(
-          "fixed right-0 top-0 z-30 h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col transition-transform duration-300 ease-out",
-          open ? "translate-x-0" : "translate-x-full"
-        )}
-      >
+      <div className="h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col shrink-0">
+
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2.5">
