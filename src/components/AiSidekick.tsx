@@ -118,7 +118,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
         citationType: shouldCite ? "citation" : "normal",
       }]);
       setIsTyping(false);
-    }, 800 + Math.random() * 600);
+    }, 3800 + Math.random() * 400);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
