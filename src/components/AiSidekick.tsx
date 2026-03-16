@@ -24,6 +24,7 @@ interface Message {
   content: string;
   reference?: string;
   citationType?: "citation" | "normal";
+  hasReport?: boolean;
 }
 
 function getContextMockResponse(cardLabel: string | null, input: string, pathname: string): string {
