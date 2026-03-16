@@ -376,21 +376,6 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
 
       {/* Input area */}
       <div className="p-4 border-t border-border space-y-3">
-        {/* Selected card reference chip */}
-        {selectedCard && (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
-              <MousePointer2 className="h-3 w-3" />
-              <span>引用: {selectedCard.label}</span>
-              <button
-                onClick={clearSelection}
-                className="ml-1 hover:bg-primary/20 rounded p-0.5 transition-colors"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Select mode banner */}
         {selectMode && (
