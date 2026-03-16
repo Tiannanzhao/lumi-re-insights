@@ -89,6 +89,24 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     setInput("");
     setIsTyping(true);
 
+    // Check for drill-down navigation triggers
+    const drilldown = detectDrilldown(text);
+
+    if (drilldown) {
+      // Navigate and apply filter
+      setTimeout(() => {
+        setDashboardFilter(drilldown.filter);
+        navigate(drilldown.navigateTo);
+        setMessages((prev) => [...prev, {
+          role: "assistant",
+          content: drilldown.response,
+          citationType: "citation" as const,
+        }]);
+        setIsTyping(false);
+      }, 800 + Math.random() * 600);
+      return;
+    }
+
     const shouldCite = isCitationTrigger(text) || !!ref;
 
     setTimeout(() => {
