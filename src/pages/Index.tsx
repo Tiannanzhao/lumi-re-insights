@@ -7,6 +7,7 @@ import { TopProductsTable } from "@/components/TopProductsTable";
 import { ChannelsTable } from "@/components/ChannelsTable";
 import { RegionCards } from "@/components/RegionCards";
 import { DateRangePicker } from "@/components/DateRangePicker";
+import { AiSummary } from "@/components/AiSummary";
 import { kpiData } from "@/lib/mockData";
 import type { DateRange } from "react-day-picker";
 
