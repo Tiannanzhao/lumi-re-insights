@@ -9,7 +9,7 @@ interface KpiCardProps {
 
 export function KpiCard({ label, value, change, trend }: KpiCardProps) {
   return (
-    <div className="rounded-xl border border-border p-6 shadow-sm hover:shadow-md transition-shadow bg-primary-foreground">
+    <div className="rounded-xl border border-border p-6 bg-primary-foreground">
       <p className="label-caps mb-2">{label}</p>
       <p className="font-mono text-2xl font-semibold text-foreground">{value}</p>
       <div className="mt-2 flex items-center gap-1.5">
