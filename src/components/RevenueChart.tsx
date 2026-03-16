@@ -40,7 +40,7 @@ export function RevenueChart() {
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#94A3B8" }}
+            tick={{ fontSize: 11, fill: "#9D9D9F" }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v) => `$${v / 1000}K`}
