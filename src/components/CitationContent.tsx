@@ -211,8 +211,6 @@ export function CitationContent() {
     </div>
   );
 }
-  disputeText,
-  setDisputeText,
   onDispute,
   onSubmitDispute,
 }: {
