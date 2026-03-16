@@ -8,7 +8,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Copy, Pin, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Copy, Pin, AlertTriangle, Share2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
