@@ -6,6 +6,7 @@ import {
   Globe,
   TrendingUp,
   Settings,
+  Sparkles,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
@@ -40,7 +41,12 @@ const bottomNav = [
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onToggleSidekick?: () => void;
+  sidekickOpen?: boolean;
+}
+
+export function AppSidebar({ onToggleSidekick, sidekickOpen }: AppSidebarProps) {
   const location = useLocation();
   const currentPath = location.pathname;
   const isActive = (path: string) => currentPath === path;
@@ -104,6 +110,27 @@ export function AppSidebar() {
           <Separator className="mb-4" />
           <TooltipProvider delayDuration={0}>
             <SidebarMenu>
+              {/* AI Sidekick Button */}
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton
+                      onClick={onToggleSidekick}
+                      isActive={sidekickOpen}
+                      className={`h-10 rounded-lg text-sm font-medium transition-colors ${collapsed ? "px-0 justify-center" : "px-3"}`}
+                    >
+                      <div className={`flex items-center justify-center h-4 w-4 rounded bg-gradient-to-br from-[#FCF45B] via-[#4F46E5] to-[#7C6DF7] ${collapsed ? "" : "mr-3"}`}>
+                        <Sparkles className="h-2.5 w-2.5 text-white" />
+                      </div>
+                      {!collapsed && <span className="bg-gradient-to-r from-[#4F46E5] to-[#7C6DF7] bg-clip-text text-transparent font-semibold">AI Sidekick</span>}
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  {collapsed && (
+                    <TooltipContent side="right">AI Sidekick</TooltipContent>
+                  )}
+                </Tooltip>
+              </SidebarMenuItem>
+
               {bottomNav.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Tooltip>

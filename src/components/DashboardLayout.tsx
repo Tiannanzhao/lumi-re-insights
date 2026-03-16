@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { AiSidekick } from "@/components/AiSidekick";
 import { Bell, Search } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -7,10 +9,15 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [sidekickOpen, setSidekickOpen] = useState(false);
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <AppSidebar />
+        <AppSidebar
+          onToggleSidekick={() => setSidekickOpen((v) => !v)}
+          sidekickOpen={sidekickOpen}
+        />
         <div className="flex-1 flex flex-col min-w-0">
           <header className="h-14 flex items-center justify-between border-b border-border bg-background px-6">
             <div className="flex items-center gap-3">
@@ -20,8 +27,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <input
                   type="text"
                   placeholder="Search analytics..."
-                  className="h-9 w-64 rounded-lg border border-border bg-surface pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
-                
+                  className="h-9 w-64 rounded-lg border border-border bg-surface pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                />
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -40,6 +47,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </main>
         </div>
       </div>
-    </SidebarProvider>);
-
+      <AiSidekick open={sidekickOpen} onClose={() => setSidekickOpen(false)} />
+    </SidebarProvider>
+  );
 }
