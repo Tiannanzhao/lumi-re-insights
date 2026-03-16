@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
+import { X, Send, Sparkles, MousePointer2, ArrowLeft, FileText } from "lucide-react";
 import { ChatHistory, ChatHistoryFullPanel } from "./ChatHistory";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
+import { q3RevenueReport } from "@/lib/mockReportData";
 import { detectDrilldown } from "@/lib/sidekickDrilldowns";
 import ReactMarkdown from "react-markdown";
 import { CitationContent } from "./CitationContent";
@@ -23,6 +24,7 @@ interface Message {
   content: string;
   reference?: string;
   citationType?: "citation" | "normal";
+  hasReport?: boolean;
 }
 
 function getContextMockResponse(cardLabel: string | null, input: string, pathname: string): string {
@@ -58,7 +60,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis, setDashboardFilter } = useSidekick();
+  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis, setDashboardFilter, setActiveReport } = useSidekick();
   const topRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -78,6 +80,11 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const isCitationTrigger = (text: string) => {
     const lower = text.toLowerCase();
     return lower.includes("revenue") && (lower.includes("dip") || lower.includes("decline") || lower.includes("drop") || lower.includes("q3") || lower.includes("down"));
+  };
+
+  const isReportTrigger = (text: string) => {
+    const lower = text.toLowerCase();
+    return (lower.includes("report") || lower.includes("报表") || lower.includes("报告")) && (lower.includes("revenue") || lower.includes("q3") || lower.includes("decline") || lower.includes("下降"));
   };
 
   const sendMessage = (overrideText?: string) => {
@@ -109,13 +116,17 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     }
 
     const shouldCite = isCitationTrigger(text) || !!ref;
+    const shouldReport = isReportTrigger(text);
 
     setTimeout(() => {
-      const response = getContextMockResponse(ref, text, location.pathname);
+      const response = shouldReport
+        ? "I've prepared a **Q3 Revenue Decline Analysis Report** covering KPI comparisons, regional impact breakdown, category performance, and key findings with evidence tagging.\n\nClick below to view the full report on the main screen."
+        : getContextMockResponse(ref, text, location.pathname);
       setMessages((prev) => [...prev, {
         role: "assistant",
         content: response,
         citationType: shouldCite ? "citation" : "normal",
+        hasReport: shouldReport,
       }]);
       setIsTyping(false);
     }, 3800 + Math.random() * 400);
@@ -248,8 +259,21 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
               </div>
             </div>
 
+            {/* Show report button */}
+            {msg.role === "assistant" && msg.hasReport && (
+              <div className="mt-3">
+                <button
+                  onClick={() => setActiveReport(q3RevenueReport)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/20 bg-primary/5 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
+                >
+                  <FileText className="h-4 w-4" />
+                  📊 View Report
+                </button>
+              </div>
+            )}
+
             {/* Show citation sections after a citation-type assistant message */}
-            {msg.role === "assistant" && msg.citationType === "citation" && (
+            {msg.role === "assistant" && msg.citationType === "citation" && !msg.hasReport && (
               <div className="mt-4 space-y-4">
                 <CitationContent />
                 <SuggestedNextCheck />

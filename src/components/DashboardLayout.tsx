@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AiSidekick } from "@/components/AiSidekick";
+import { ReportOverlay } from "@/components/ReportOverlay";
 import { useSidekick } from "@/contexts/SidekickContext";
 import { Bell, Search } from "lucide-react";
 
@@ -9,7 +10,7 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode } = useSidekick();
+  const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode, activeReport } = useSidekick();
 
   return (
     <SidebarProvider defaultOpen={false}>
@@ -43,8 +44,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </header>
           <div className="flex-1 flex min-h-0">
-            <main className={`flex-1 p-6 overflow-auto bg-primary-foreground transition-all ${selectMode ? "cursor-crosshair" : ""}`}>
-              {children}
+            <main className={`flex-1 overflow-auto bg-primary-foreground transition-all ${!activeReport ? "p-6" : ""} ${selectMode ? "cursor-crosshair" : ""}`}>
+              {activeReport ? <ReportOverlay /> : children}
             </main>
             <AiSidekick open={sidekickOpen} onClose={() => setSidekickOpen(false)} />
           </div>
