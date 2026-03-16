@@ -128,6 +128,7 @@ export function CitationPill({
   reasoningSteps,
   onDispute,
   targetCardId,
+  externalUrl,
 }: CitationPillProps) {
   const info = { ...sourceInfoMap[type](label), ...sourceOverrides };
   const [popOpen, setPopOpen] = useState(false);
