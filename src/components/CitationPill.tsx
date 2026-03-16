@@ -116,6 +116,7 @@ export interface CitationPillProps {
   reasoningSteps?: ReasoningStep[];
   onDispute?: () => void;
   targetCardId?: string;
+  externalUrl?: string;
 }
 
 export function CitationPill({
