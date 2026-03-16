@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ThumbsUp, ThumbsDown, Copy, Pin, MessageSquareText, Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { ExportReviewDialog } from "./ExportReviewDialog";
 
 type FeedbackState = "none" | "up" | "down";
 
@@ -17,20 +18,29 @@ export function MessageActions({ content, messageIndex }: MessageActionsProps) {
   const [pinned, setPinned] = useState(false);
   const [copied, setCopied] = useState(false);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [exportDialog, setExportDialog] = useState<{ open: boolean; action: "copy" | "pin" }>({ open: false, action: "copy" });
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(content);
-    setCopied(true);
-    toast({ title: "Copied to clipboard", description: "Analysis copied as text." });
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = () => {
+    setExportDialog({ open: true, action: "copy" });
   };
 
   const handlePin = () => {
-    setPinned(!pinned);
-    toast({
-      title: pinned ? "Unpinned" : "Pinned",
-      description: pinned ? "Removed from saved analyses." : "Saved for quick access.",
-    });
+    if (pinned) {
+      setPinned(false);
+      toast({ title: "Unpinned", description: "Removed from saved analyses." });
+      return;
+    }
+    setExportDialog({ open: true, action: "pin" });
+  };
+
+  const handleExportConfirm = async (editedContent: string) => {
+    if (exportDialog.action === "copy") {
+      await navigator.clipboard.writeText(editedContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } else {
+      setPinned(true);
+    }
   };
 
   const handleFeedback = (type: "up" | "down") => {
