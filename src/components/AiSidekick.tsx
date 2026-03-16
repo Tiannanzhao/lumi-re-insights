@@ -116,13 +116,17 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     }
 
     const shouldCite = isCitationTrigger(text) || !!ref;
+    const shouldReport = isReportTrigger(text);
 
     setTimeout(() => {
-      const response = getContextMockResponse(ref, text, location.pathname);
+      const response = shouldReport
+        ? "I've prepared a **Q3 Revenue Decline Analysis Report** covering KPI comparisons, regional impact breakdown, category performance, and key findings with evidence tagging.\n\nClick below to view the full report on the main screen."
+        : getContextMockResponse(ref, text, location.pathname);
       setMessages((prev) => [...prev, {
         role: "assistant",
         content: response,
         citationType: shouldCite ? "citation" : "normal",
+        hasReport: shouldReport,
       }]);
       setIsTyping(false);
     }, 3800 + Math.random() * 400);
