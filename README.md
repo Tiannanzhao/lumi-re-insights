@@ -66,19 +66,15 @@ Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and 
 
 ## GitHub Pages
 
-This repository is configured to deploy to GitHub Pages from the `main` branch using GitHub Actions.
+This repository is configured for GitHub Pages as a project site.
 
-After you push to GitHub:
-
-```sh
-git push origin main
-```
-
-Then in GitHub:
+In GitHub:
 
 1. Go to `Settings` -> `Pages`
-2. Set `Source` to `GitHub Actions`
-3. Wait for the `Deploy to GitHub Pages` workflow to finish
+2. Set `Source` to `Deploy from a branch`
+3. Select branch `main`
+4. Select folder `/docs`
+5. Save and wait a few minutes for GitHub Pages to publish
 
 Your site URL will be:
 
