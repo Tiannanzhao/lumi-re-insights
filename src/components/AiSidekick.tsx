@@ -11,6 +11,7 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   reference?: string;
+  citationType?: "citation" | "normal";
 }
 
 const contextResponses: Record<string, Record<string, string>> = {
