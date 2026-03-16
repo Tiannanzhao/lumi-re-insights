@@ -33,6 +33,7 @@ export function AiSummary() {
           唯一亮点是 <span className="font-medium text-foreground">Fragrance 品类</span>占比从 7% 提升至 9%，显示出逆势增长潜力。
         </p>
       </div>
+      </div>
     </div>
   );
 }
