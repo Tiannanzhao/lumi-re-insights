@@ -161,7 +161,7 @@ export function CitationPill({
 /* ═══════════════════════════════════════════
    INTERNAL SOURCE POPOVER
    ═══════════════════════════════════════════ */
-function InternalPopover({ info, data }: { info: SourceInfo; data: DataRow[] }) {
+function InternalPopover({ info, data, onOpenInOverview }: { info: SourceInfo; data: DataRow[]; onOpenInOverview?: () => void }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-semibold text-slate-900">{info.name}</p>
@@ -184,7 +184,10 @@ function InternalPopover({ info, data }: { info: SourceInfo; data: DataRow[] }) 
       ))}
 
       <div className="border-t border-slate-200 my-2" />
-      <button className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75">
+      <button
+        onClick={onOpenInOverview}
+        className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75"
+      >
         Open in Overview tab ↗
       </button>
     </div>
