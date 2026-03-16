@@ -44,7 +44,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </header>
           <div className="flex-1 flex min-h-0">
-            <main className={`flex-1 overflow-auto bg-primary-foreground transition-all ${selectMode ? "cursor-crosshair" : ""}`}>
+            <main className={`flex-1 overflow-auto bg-primary-foreground transition-all ${!activeReport ? "p-6" : ""} ${selectMode ? "cursor-crosshair" : ""}`}>
               {activeReport ? <ReportOverlay /> : children}
             </main>
             <AiSidekick open={sidekickOpen} onClose={() => setSidekickOpen(false)} />
