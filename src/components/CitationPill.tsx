@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { useSidekick } from "@/contexts/SidekickContext";
 
 export type CitationType = "internal" | "external" | "inferred" | "none";
 
