@@ -1,10 +1,15 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { KpiCard } from "@/components/KpiCard";
 import { SelectableCard } from "@/components/SelectableCard";
-import { customersKpi, customerSegments, customerDemographics, topCustomers } from "@/lib/mockDataPages";
+import { useSidekick } from "@/contexts/SidekickContext";
+import {
+  customersKpi, customerSegments, customerDemographics, topCustomers,
+  regionCustomerSegments, regionCustomersKpi, regionTopCustomers,
+} from "@/lib/mockDataPages";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
+import { X, MapPin } from "lucide-react";
 
 function TierBadge({ tier }: { tier: string }) {
   const styles: Record<string, string> = {
@@ -19,6 +24,21 @@ function TierBadge({ tier }: { tier: string }) {
 }
 
 const Customers = () => {
+  const { dashboardFilter, clearDashboardFilter } = useSidekick();
+  const regionFilter = dashboardFilter.region;
+
+  const activeKpi = regionFilter && regionCustomersKpi[regionFilter]
+    ? regionCustomersKpi[regionFilter]
+    : customersKpi;
+
+  const activeSegments = regionFilter && regionCustomerSegments[regionFilter]
+    ? regionCustomerSegments[regionFilter]
+    : customerSegments;
+
+  const activeTopCustomers = regionFilter && regionTopCustomers[regionFilter]
+    ? regionTopCustomers[regionFilter]
+    : topCustomers;
+
   const kpiRefs = [
     { id: "cust-total", label: "Total Customers", type: "kpi" as const },
     { id: "cust-new", label: "New Customers", type: "kpi" as const },
@@ -29,13 +49,33 @@ const Customers = () => {
   return (
     <DashboardLayout>
       <div className="space-y-6 animate-fade-in">
-        <div>
-          <h2 className="text-lg font-semibold text-foreground">Customers</h2>
-          <p className="text-sm text-muted-foreground">Acquisition, retention and lifetime value</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Customers</h2>
+            <p className="text-sm text-muted-foreground">Acquisition, retention and lifetime value</p>
+          </div>
         </div>
 
+        {/* Active filter banner */}
+        {regionFilter && (
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/20 bg-primary/5 animate-fade-in">
+            <MapPin className="h-4 w-4 text-primary shrink-0" />
+            <span className="text-sm font-medium text-foreground">
+              Filtered to <span className="text-primary">{regionFilter}</span>
+            </span>
+            <span className="text-xs text-muted-foreground">— showing region-specific data</span>
+            <button
+              onClick={clearDashboardFilter}
+              className="ml-auto flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <X className="h-3 w-3" />
+              Clear filter
+            </button>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {customersKpi.map((kpi, i) => (
+          {activeKpi.map((kpi, i) => (
             <SelectableCard key={kpi.label} cardRef={kpiRefs[i]}>
               <KpiCard {...kpi} />
             </SelectableCard>
@@ -45,10 +85,13 @@ const Customers = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <SelectableCard cardRef={{ id: "customer-segments", label: "Customer Segments", type: "breakdown" }} className="lg:col-span-2">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-foreground mb-1">Customer Segments</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-1">
+                Customer Segments
+                {regionFilter && <span className="text-primary ml-1">— {regionFilter}</span>}
+              </h3>
               <p className="text-xs text-muted-foreground mb-6">Revenue contribution by segment</p>
               <div className="space-y-3">
-                {customerSegments.map((seg) => (
+                {activeSegments.map((seg) => (
                   <div key={seg.segment} className="flex items-center justify-between rounded-lg border border-border p-4">
                     <div>
                       <p className="text-sm font-medium text-foreground">{seg.segment}</p>
@@ -91,7 +134,10 @@ const Customers = () => {
         <SelectableCard cardRef={{ id: "top-customers", label: "Top Customers", type: "table" }}>
           <div className="rounded-xl border border-border bg-card shadow-sm">
             <div className="p-6 pb-4">
-              <h3 className="text-sm font-semibold text-foreground">Top Customers</h3>
+              <h3 className="text-sm font-semibold text-foreground">
+                Top Customers
+                {regionFilter && <span className="text-primary ml-1">— {regionFilter}</span>}
+              </h3>
               <p className="text-xs text-muted-foreground mt-0.5">By total spend</p>
             </div>
             <Table>
@@ -105,7 +151,7 @@ const Customers = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {topCustomers.map((c) => (
+                {activeTopCustomers.map((c) => (
                   <TableRow key={c.email} className="border-border hover:bg-surface">
                     <TableCell className="pl-6">
                       <p className="font-medium text-sm">{c.name}</p>
