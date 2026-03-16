@@ -13,13 +13,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full">
+      <div className="h-screen flex w-full overflow-hidden">
         <AppSidebar
           onToggleSidekick={() => setSidekickOpen((v) => !v)}
           sidekickOpen={sidekickOpen}
         />
-        <div className="flex-1 flex flex-col min-w-0">
-          <header className="h-14 flex items-center justify-between border-b border-border bg-background px-6">
+        <div className="flex-1 flex flex-col min-w-0 h-screen">
+          <header className="h-14 shrink-0 flex items-center justify-between border-b border-border bg-background px-6">
             <div className="flex items-center gap-3">
               <SidebarTrigger className="text-muted-foreground" />
               <div className="relative">
@@ -42,12 +42,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
             </div>
           </header>
-          <main className="flex-1 overflow-auto bg-primary-foreground flex">
-            <div className="flex-1 p-6 overflow-auto">
+          <div className="flex-1 flex min-h-0">
+            <main className="flex-1 p-6 overflow-auto bg-primary-foreground">
               {children}
-            </div>
+            </main>
             <AiSidekick open={sidekickOpen} onClose={() => setSidekickOpen(false)} />
-          </main>
+          </div>
         </div>
       </div>
     </SidebarProvider>
