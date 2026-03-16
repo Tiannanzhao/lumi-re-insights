@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
+import { ChatHistory } from "./ChatHistory";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
@@ -121,12 +122,15 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
             Beta
           </span>
         </div>
-        <button
-          onClick={onClose}
-          className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-        >
-          <X className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <ChatHistory />
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
