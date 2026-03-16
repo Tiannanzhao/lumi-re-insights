@@ -69,7 +69,15 @@ export function ReportOverlay() {
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-2">Executive Summary</p>
         <p className="text-sm text-muted-foreground leading-relaxed">{r.executiveSummary}</p>
-      </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShareOpen(true)}
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            Share Report
+          </button>
+        </div>
 
       {/* KPI Comparison — 4-col grid matching KpiCard layout */}
       <div>
