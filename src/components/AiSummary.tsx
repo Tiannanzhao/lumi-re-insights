@@ -26,11 +26,11 @@ export function AiSummary() {
 
         {/* Summary content */}
         <p className="text-sm leading-relaxed text-foreground/85">
-          Q3 整体表现显著低于 Q2，收入环比下降 14.3% 至 $1.8M，订单量和转化率同步走低。
-          <span className="font-medium text-foreground"> Footwear 品类</span>受影响最大（Suede Ankle Boot 已断货），
-          <span className="font-medium text-foreground">中东市场</span>跌幅最深（-15.1%）。
-          Paid Social 渠道转化率降至 2.2%，建议重新评估投放策略。
-          唯一亮点是 <span className="font-medium text-foreground">Fragrance 品类</span>占比从 7% 提升至 9%，显示出逆势增长潜力。
+          Q3 performance fell significantly below Q2, with revenue declining 14.3% QoQ to $1.8M as order volume and conversion rates dropped in tandem.
+          <span className="font-medium text-foreground"> Footwear</span> was hit hardest (Suede Ankle Boot out of stock),
+          while the <span className="font-medium text-foreground">Middle East</span> saw the steepest regional decline (-15.1%).
+          Paid Social CVR dropped to 2.2% — consider reassessing ad spend strategy.
+          The sole bright spot is <span className="font-medium text-foreground">Fragrance</span>, with share rising from 7% to 9%, showing counter-trend growth potential.
         </p>
       </div>
       </div>
