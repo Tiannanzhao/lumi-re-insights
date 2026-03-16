@@ -73,11 +73,58 @@ export const customersKpi = [
 ];
 
 export const customerSegments = [
-  { segment: "VIP", count: "1,240", revenue: "$892K", avgOrders: 8.2, share: 49 },
-  { segment: "Regular", count: "8,560", revenue: "$612K", avgOrders: 3.1, share: 34 },
-  { segment: "Occasional", count: "10,412", revenue: "$248K", avgOrders: 1.4, share: 14 },
-  { segment: "At Risk", count: "4,600", revenue: "$48K", avgOrders: 0.3, share: 3 },
+  { segment: "VIP", count: "1,240", revenue: "$892K", avgOrders: 8.2, share: 49, region: "all" },
+  { segment: "Regular", count: "8,560", revenue: "$612K", avgOrders: 3.1, share: 34, region: "all" },
+  { segment: "Occasional", count: "10,412", revenue: "$248K", avgOrders: 1.4, share: 14, region: "all" },
+  { segment: "At Risk", count: "4,600", revenue: "$48K", avgOrders: 0.3, share: 3, region: "all" },
 ];
+
+// Region-specific customer data
+export const regionCustomerSegments: Record<string, typeof customerSegments> = {
+  "Middle East": [
+    { segment: "VIP", count: "148", revenue: "$124K", avgOrders: 9.1, share: 63, region: "Middle East" },
+    { segment: "Regular", count: "620", revenue: "$48K", avgOrders: 2.4, share: 24, region: "Middle East" },
+    { segment: "Occasional", count: "890", revenue: "$18K", avgOrders: 0.9, share: 9, region: "Middle East" },
+    { segment: "At Risk", count: "412", revenue: "$7K", avgOrders: 0.2, share: 4, region: "Middle East" },
+  ],
+  "North America": [
+    { segment: "VIP", count: "486", revenue: "$342K", avgOrders: 8.8, share: 50, region: "North America" },
+    { segment: "Regular", count: "3,240", revenue: "$238K", avgOrders: 3.4, share: 35, region: "North America" },
+    { segment: "Occasional", count: "4,120", revenue: "$86K", avgOrders: 1.5, share: 13, region: "North America" },
+    { segment: "At Risk", count: "1,580", revenue: "$19K", avgOrders: 0.3, share: 2, region: "North America" },
+  ],
+  "Europe": [
+    { segment: "VIP", count: "382", revenue: "$268K", avgOrders: 7.9, share: 48, region: "Europe" },
+    { segment: "Regular", count: "2,860", revenue: "$196K", avgOrders: 3.0, share: 35, region: "Europe" },
+    { segment: "Occasional", count: "3,420", revenue: "$82K", avgOrders: 1.3, share: 15, region: "Europe" },
+    { segment: "At Risk", count: "1,040", revenue: "$12K", avgOrders: 0.3, share: 2, region: "Europe" },
+  ],
+  "Asia Pacific": [
+    { segment: "VIP", count: "224", revenue: "$158K", avgOrders: 8.5, share: 44, region: "Asia Pacific" },
+    { segment: "Regular", count: "1,840", revenue: "$130K", avgOrders: 2.8, share: 36, region: "Asia Pacific" },
+    { segment: "Occasional", count: "1,982", revenue: "$62K", avgOrders: 1.2, share: 17, region: "Asia Pacific" },
+    { segment: "At Risk", count: "568", revenue: "$10K", avgOrders: 0.2, share: 3, region: "Asia Pacific" },
+  ],
+};
+
+export const regionCustomersKpi: Record<string, typeof customersKpi> = {
+  "Middle East": [
+    { label: "Total Customers", value: "2,070", change: "-8.4%", trend: "down" as const },
+    { label: "New Customers", value: "124", change: "-32.1%", trend: "down" as const },
+    { label: "Repeat Rate", value: "28.6%", change: "-4.2%", trend: "down" as const },
+    { label: "Avg. LTV", value: "$1,180", change: "-12.3%", trend: "down" as const },
+  ],
+};
+
+export const regionTopCustomers: Record<string, typeof topCustomers> = {
+  "Middle East": [
+    { name: "Fatima Al-Rashid", email: "fatima@example.com", orders: 18, totalSpent: "$22,640", lastOrder: "Aug 15", tier: "VIP" },
+    { name: "Omar Hassan", email: "omar@example.com", orders: 14, totalSpent: "$16,280", lastOrder: "Sep 02", tier: "VIP" },
+    { name: "Layla Mansour", email: "layla@example.com", orders: 11, totalSpent: "$11,420", lastOrder: "Jul 28", tier: "VIP" },
+    { name: "Khalid Ibrahim", email: "khalid@example.com", orders: 6, totalSpent: "$5,890", lastOrder: "Sep 10", tier: "Regular" },
+    { name: "Nadia Boutros", email: "nadia@example.com", orders: 4, totalSpent: "$3,210", lastOrder: "Aug 22", tier: "Regular" },
+  ],
+};
 
 export const customerDemographics = [
   { ageGroup: "18–24", percentage: 12 },

@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
 import { ChatHistory, ChatHistoryFullPanel } from "./ChatHistory";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
+import { detectDrilldown } from "@/lib/sidekickDrilldowns";
 import ReactMarkdown from "react-markdown";
 import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
@@ -56,9 +57,10 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis } = useSidekick();
+  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis, setDashboardFilter } = useSidekick();
   const topRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const currentQuestions = pageSuggestedQuestions[location.pathname] || pageSuggestedQuestions["/"];
 
@@ -86,6 +88,24 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsTyping(true);
+
+    // Check for drill-down navigation triggers
+    const drilldown = detectDrilldown(text);
+
+    if (drilldown) {
+      // Navigate and apply filter
+      setTimeout(() => {
+        setDashboardFilter(drilldown.filter);
+        navigate(drilldown.navigateTo);
+        setMessages((prev) => [...prev, {
+          role: "assistant",
+          content: drilldown.response,
+          citationType: "citation" as const,
+        }]);
+        setIsTyping(false);
+      }, 800 + Math.random() * 600);
+      return;
+    }
 
     const shouldCite = isCitationTrigger(text) || !!ref;
 
