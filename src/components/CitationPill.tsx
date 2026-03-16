@@ -161,7 +161,7 @@ export function CitationPill({
         collisionPadding={12}
       >
         {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} onOpenInOverview={handleOpenInOverview} />}
-        {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} />}
+        {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} externalUrl={externalUrl} />}
         {type === "inferred" && (
           <InferredPopover
             info={info}
