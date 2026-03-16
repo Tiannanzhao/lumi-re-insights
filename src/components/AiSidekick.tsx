@@ -418,16 +418,16 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
               }
             }}
             className={cn(
-              "flex items-center justify-center h-10 w-10 rounded-lg border transition-all shrink-0",
+              "flex items-center gap-1.5 h-10 px-3 rounded-lg border transition-all shrink-0 text-xs font-medium",
               selectMode
                 ? "bg-primary text-primary-foreground border-primary"
                 : selectedCard
                   ? "bg-primary/10 text-primary border-primary/30"
                   : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-primary/30"
             )}
-            title="选择 Dashboard 卡片作为参考"
           >
-            <MousePointer2 className="h-4 w-4" />
+            <MousePointer2 className="h-3.5 w-3.5" />
+            <span>选择卡片</span>
           </button>
 
           <textarea
