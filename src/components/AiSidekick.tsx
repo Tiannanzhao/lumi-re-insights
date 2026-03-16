@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
+import { X, Send, Sparkles, MousePointer2, ArrowLeft, FileText } from "lucide-react";
 import { ChatHistory, ChatHistoryFullPanel } from "./ChatHistory";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
