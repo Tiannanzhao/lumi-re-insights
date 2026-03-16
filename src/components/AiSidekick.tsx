@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
 import { detectDrilldown } from "@/lib/sidekickDrilldowns";
-import { useSidekick } from "@/contexts/SidekickContext";
 import ReactMarkdown from "react-markdown";
 import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
