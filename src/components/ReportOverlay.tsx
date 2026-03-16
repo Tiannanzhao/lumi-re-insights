@@ -1,11 +1,11 @@
-import { ArrowLeft, TrendingDown, FileText, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, TrendingDown, TrendingUp, FileText, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
 import { useSidekick } from "@/contexts/SidekickContext";
 import type { ReportData } from "@/lib/mockReportData";
 
 const findingIcon = {
-  evidence: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--success))] shrink-0 mt-0.5" />,
-  assumption: <AlertTriangle className="h-4 w-4 text-[hsl(var(--warning))] shrink-0 mt-0.5" />,
-  unknown: <HelpCircle className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />,
+  evidence: <CheckCircle2 className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />,
+  assumption: <AlertTriangle className="h-3.5 w-3.5 text-warning shrink-0 mt-0.5" />,
+  unknown: <HelpCircle className="h-3.5 w-3.5 text-muted-foreground shrink-0 mt-0.5" />,
 };
 
 const findingLabel = {
@@ -22,97 +22,89 @@ export function ReportOverlay() {
   const maxImpact = Math.max(...r.regionImpacts.map((ri) => Math.abs(ri.impact)));
 
   return (
-    <div className="h-full overflow-auto bg-background p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={clearActiveReport}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
-        </button>
-      </div>
-
-      <div className="flex items-start gap-3">
-        <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary/10 shrink-0">
-          <FileText className="h-5 w-5 text-primary" />
-        </div>
+    <div className="h-full overflow-auto p-6 space-y-6">
+      {/* Header — matches dashboard page header style */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-foreground">{r.title}</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">Generated {r.generatedAt} by AI Sidekick</p>
+          <button
+            onClick={clearActiveReport}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mb-2"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Dashboard
+          </button>
+          <h2 className="text-lg font-semibold text-foreground">{r.title}</h2>
+          <p className="text-sm text-muted-foreground">
+            Generated {r.generatedAt} by AI Sidekick
+          </p>
         </div>
       </div>
 
-      {/* Executive Summary */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h2 className="text-sm font-semibold text-foreground mb-2">Executive Summary</h2>
+      {/* Executive Summary — same card style as KpiCard / AiSummary */}
+      <div className="rounded-xl border border-border p-6 bg-primary-foreground">
+        <p className="label-caps mb-2">Executive Summary</p>
         <p className="text-sm text-muted-foreground leading-relaxed">{r.executiveSummary}</p>
       </div>
 
-      {/* KPI Comparison */}
+      {/* KPI Comparison — 4-col grid matching KpiCard layout */}
       <div>
-        <h2 className="text-sm font-semibold text-foreground mb-3">Q2 vs Q3 Comparison</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <p className="label-caps mb-3">Q2 vs Q3 Comparison</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {r.kpis.map((kpi) => (
-            <div key={kpi.label} className="rounded-xl border border-border bg-card p-4">
-              <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground mb-2">{kpi.label}</p>
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className="font-mono text-lg font-semibold text-foreground">{kpi.q3}</span>
-                <span className="text-xs text-muted-foreground line-through">{kpi.q2}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <TrendingDown className="h-3 w-3 text-[hsl(var(--error))]" />
-                <span className="text-xs font-medium text-[hsl(var(--error))]">{kpi.change}</span>
+            <div key={kpi.label} className="rounded-xl border border-border p-6 bg-primary-foreground">
+              <p className="label-caps mb-2">{kpi.label}</p>
+              <p className="font-mono text-2xl font-semibold text-foreground">{kpi.q3}</p>
+              <div className="mt-2 flex items-center gap-1.5">
+                <TrendingDown className="h-3.5 w-3.5 text-error" />
+                <span className="text-xs font-medium text-error">{kpi.change}</span>
+                <span className="text-xs text-muted-foreground">from {kpi.q2}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Regional Impact */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h2 className="text-sm font-semibold text-foreground mb-4">Regional Impact (Revenue Decline)</h2>
+      {/* Regional Impact — horizontal bar chart in card */}
+      <div className="rounded-xl border border-border p-6 bg-primary-foreground">
+        <p className="label-caps mb-4">Regional Impact</p>
         <div className="space-y-3">
           {r.regionImpacts.map((ri) => (
             <div key={ri.region} className="flex items-center gap-3">
               <span className="text-sm text-foreground w-28 shrink-0">{ri.region}</span>
-              <div className="flex-1 h-7 bg-muted rounded-md overflow-hidden relative">
+              <div className="flex-1 h-6 bg-muted rounded overflow-hidden">
                 <div
-                  className="h-full rounded-md bg-[hsl(var(--error))]/20"
-                  style={{ width: `${(Math.abs(ri.impact) / maxImpact) * 100}%` }}
-                />
-                <div
-                  className="absolute inset-y-0 left-0 rounded-md bg-[hsl(var(--error))]/60"
+                  className="h-full rounded bg-error/40"
                   style={{ width: `${(Math.abs(ri.impact) / maxImpact) * 100}%` }}
                 />
               </div>
-              <span className="text-xs font-mono font-medium text-[hsl(var(--error))] w-16 text-right">{ri.percentage}</span>
+              <span className="font-mono text-xs font-medium text-error w-14 text-right">{ri.percentage}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Category Changes Table */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h2 className="text-sm font-semibold text-foreground mb-3">Category Performance</h2>
+      {/* Category Changes — table in card, matching TopProductsTable / ChannelsTable style */}
+      <div className="rounded-xl border border-border p-6 bg-primary-foreground">
+        <p className="label-caps mb-4">Category Performance</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border">
-                <th className="text-left py-2 pr-4 text-xs font-medium text-muted-foreground">Category</th>
-                <th className="text-right py-2 px-4 text-xs font-medium text-muted-foreground">Q2</th>
-                <th className="text-right py-2 px-4 text-xs font-medium text-muted-foreground">Q3</th>
-                <th className="text-right py-2 pl-4 text-xs font-medium text-muted-foreground">Change</th>
+                <th className="text-left py-2 pr-4 label-caps font-medium">Category</th>
+                <th className="text-right py-2 px-4 label-caps font-medium">Q2 Revenue</th>
+                <th className="text-right py-2 px-4 label-caps font-medium">Q3 Revenue</th>
+                <th className="text-right py-2 pl-4 label-caps font-medium">Change</th>
               </tr>
             </thead>
             <tbody>
               {r.categoryChanges.map((c) => (
                 <tr key={c.category} className="border-b border-border/50 last:border-0">
-                  <td className="py-2.5 pr-4 text-foreground">{c.category}</td>
-                  <td className="py-2.5 px-4 text-right font-mono text-muted-foreground">{c.q2Revenue}</td>
-                  <td className="py-2.5 px-4 text-right font-mono text-foreground">{c.q3Revenue}</td>
-                  <td className="py-2.5 pl-4 text-right font-mono font-medium text-[hsl(var(--error))]">{c.change}</td>
+                  <td className="py-3 pr-4 text-foreground">{c.category}</td>
+                  <td className="py-3 px-4 text-right font-mono text-muted-foreground">{c.q2Revenue}</td>
+                  <td className="py-3 px-4 text-right font-mono text-foreground">{c.q3Revenue}</td>
+                  <td className="py-3 pl-4 text-right">
+                    <span className="font-mono text-xs font-medium text-error">{c.change}</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -121,24 +113,24 @@ export function ReportOverlay() {
       </div>
 
       {/* Key Findings */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h2 className="text-sm font-semibold text-foreground mb-3">Key Findings</h2>
+      <div className="rounded-xl border border-border p-6 bg-primary-foreground">
+        <p className="label-caps mb-4">Key Findings</p>
         <div className="space-y-3">
           {r.keyFindings.map((f, i) => (
             <div key={i} className="flex items-start gap-2.5">
               {findingIcon[f.type]}
               <div>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{findingLabel[f.type]}</span>
-                <p className="text-sm text-foreground mt-0.5">{f.text}</p>
+                <span className="label-caps">{findingLabel[f.type]}</span>
+                <p className="text-sm text-foreground mt-0.5 leading-relaxed">{f.text}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Data Sources */}
+      {/* Data Sources footer */}
       <div className="text-xs text-muted-foreground border-t border-border pt-4 pb-2">
-        <span className="font-medium">Data Sources:</span>{" "}
+        <span className="font-medium text-foreground">Data Sources:</span>{" "}
         {r.dataSources.join(" · ")}
       </div>
     </div>
