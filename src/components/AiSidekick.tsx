@@ -360,6 +360,15 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </div>
         ))}
 
+        {/* Citation demo content - always visible when panel is open */}
+        {messages.length > 0 && (
+          <div className="space-y-4">
+            <CitationContent />
+            <SuggestedNextCheck />
+            <SourcesSummary />
+          </div>
+        )}
+
         {isTyping && (
           <div className="flex justify-start">
             <div className="bg-muted rounded-xl rounded-bl-sm px-4 py-3">
