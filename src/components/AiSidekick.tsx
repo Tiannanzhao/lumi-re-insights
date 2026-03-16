@@ -3,6 +3,9 @@ import { X, Send, Sparkles, MousePointer2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
 import ReactMarkdown from "react-markdown";
+import { CitationContent } from "./CitationContent";
+import { SourcesSummary } from "./SourcesSummary";
+import { SuggestedNextCheck } from "./SuggestedNextCheck";
 
 interface Message {
   role: "user" | "assistant";
