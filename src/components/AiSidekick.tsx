@@ -10,6 +10,7 @@ import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
 import { MessageActions } from "./MessageActions";
 import { SuggestedNextCheck } from "./SuggestedNextCheck";
+import { ProcessingStages } from "./ProcessingStages";
 import {
   overviewCardResponses,
   pageResponses,
@@ -103,7 +104,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           citationType: "citation" as const,
         }]);
         setIsTyping(false);
-      }, 800 + Math.random() * 600);
+      }, 3800 + Math.random() * 400);
       return;
     }
 
@@ -117,7 +118,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
         citationType: shouldCite ? "citation" : "normal",
       }]);
       setIsTyping(false);
-    }, 800 + Math.random() * 600);
+    }, 3800 + Math.random() * 400);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -258,17 +259,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </div>
         ))}
 
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="bg-muted rounded-xl rounded-bl-sm px-4 py-3">
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: "300ms" }} />
-              </div>
-            </div>
-          </div>
-        )}
+        {isTyping && <ProcessingStages />}
         <div ref={bottomRef} />
       </div>
 
