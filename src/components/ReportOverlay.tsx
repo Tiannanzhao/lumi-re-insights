@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, TrendingDown, TrendingUp, FileText, AlertTriangle, HelpCircle, CheckCircle2, Share2 } from "lucide-react";
+import { ArrowLeft, TrendingDown, Share2, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
 import { useSidekick } from "@/contexts/SidekickContext";
 import type { ReportData } from "@/lib/mockReportData";
 import { ExportReviewDialog } from "@/components/ExportReviewDialog";
@@ -19,6 +19,7 @@ const findingLabel = {
 export function ReportOverlay() {
   const { activeReport, clearActiveReport } = useSidekick();
   const [shareOpen, setShareOpen] = useState(false);
+
   if (!activeReport) return null;
   const r = activeReport as ReportData;
 
@@ -48,7 +49,7 @@ export function ReportOverlay() {
 
   return (
     <div className="h-full overflow-auto p-6 space-y-6">
-      {/* Header — matches dashboard page header style */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <button
@@ -72,12 +73,13 @@ export function ReportOverlay() {
         </button>
       </div>
 
-      {/* Executive Summary — same card style as KpiCard / AiSummary */}
+      {/* Executive Summary */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-2">Executive Summary</p>
         <p className="text-sm text-muted-foreground leading-relaxed">{r.executiveSummary}</p>
+      </div>
 
-      {/* KPI Comparison — 4-col grid matching KpiCard layout */}
+      {/* KPI Comparison */}
       <div>
         <p className="label-caps mb-3">Q2 vs Q3 Comparison</p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -95,7 +97,7 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Regional Impact — horizontal bar chart in card */}
+      {/* Regional Impact */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-4">Regional Impact</p>
         <div className="space-y-3">
@@ -114,7 +116,7 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Category Changes — table in card, matching TopProductsTable / ChannelsTable style */}
+      {/* Category Changes */}
       <div className="rounded-xl border border-border p-6 bg-primary-foreground">
         <p className="label-caps mb-4">Category Performance</p>
         <div className="overflow-x-auto">
@@ -159,11 +161,22 @@ export function ReportOverlay() {
         </div>
       </div>
 
-      {/* Data Sources footer */}
+      {/* Data Sources */}
       <div className="text-xs text-muted-foreground border-t border-border pt-4 pb-2">
         <span className="font-medium text-foreground">Data Sources:</span>{" "}
         {r.dataSources.join(" · ")}
       </div>
+
+      {/* Share Export Review Dialog */}
+      <ExportReviewDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        content={reportText}
+        action="share"
+        onConfirm={(edited) => {
+          navigator.clipboard.writeText(edited);
+        }}
+      />
     </div>
   );
 }
