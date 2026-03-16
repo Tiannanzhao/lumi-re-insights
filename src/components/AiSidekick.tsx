@@ -293,8 +293,8 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 && (
-          <div className="text-center px-6 pt-4 pb-2">
-            <div className="relative mb-4 inline-block">
+          <div className="flex flex-col items-center justify-center h-full text-center px-6">
+            <div className="relative mb-4">
               <div className="absolute -inset-1 rounded-2xl blur-md opacity-30" style={{ background: "linear-gradient(135deg, #DBE7FF, #FCF45B, #C7BFFF)" }} />
               <div className="relative flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-[#FCF45B] via-[#4F46E5] to-[#7C6DF7]">
                 <Sparkles className="h-6 w-6 text-white" />
@@ -302,44 +302,74 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
             </div>
             <h3 className="text-sm font-semibold text-foreground mb-1">Ask anything about your Dashboard</h3>
             <p className="text-xs text-muted-foreground mb-4">I can help analyze revenue trends, product performance, channel efficiency, and more</p>
+
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50 border border-border mb-6 max-w-[280px]">
+              <MousePointer2 className="h-3.5 w-3.5 text-primary shrink-0" />
+              <p className="text-[11px] text-muted-foreground text-left">
+                Click <span className="font-medium text-foreground">Select Card</span> below to reference any Dashboard component in your question
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2 w-full max-w-[280px]">
+              {[
+                "Why did revenue dip in Q3?",
+                "Which products need attention?",
+                "How efficient are the channels?",
+                "How are regions performing?",
+              ].map((q) => (
+                <button
+                  key={q}
+                  onClick={() => sendMessage(q)}
+                  className="text-left px-3 py-2 rounded-lg border border-border text-xs text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-muted/50 transition-all"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         {messages.map((msg, i) => (
-          <div key={i} className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}>
-            <div className="max-w-[85%]">
-              {msg.role === "user" && msg.reference && (
-                <div className="flex justify-end mb-1">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[10px] font-medium text-primary">
-                    <MousePointer2 className="h-2.5 w-2.5" />
-                    {msg.reference}
-                  </span>
-                </div>
-              )}
-              <div
-                className={cn(
-                  "rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
-                  msg.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-br-sm"
-                    : "bg-muted text-foreground rounded-bl-sm"
-                )}
-              >
-                {msg.role === "assistant" ? (
-                  <div className="prose prose-sm max-w-none [&_p]:my-1 [&_ol]:my-1 [&_ul]:my-1 [&_li]:my-0.5 [&_table]:my-2 [&_th]:px-2 [&_th]:py-1 [&_td]:px-2 [&_td]:py-1 [&_table]:text-xs text-foreground">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+          <div key={i}>
+            <div className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}>
+              <div className="max-w-[85%]">
+                {msg.role === "user" && msg.reference && (
+                  <div className="flex justify-end mb-1">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 border border-primary/20 px-2 py-0.5 text-[10px] font-medium text-primary">
+                      <MousePointer2 className="h-2.5 w-2.5" />
+                      {msg.reference}
+                    </span>
                   </div>
-                ) : (
-                  msg.content
                 )}
+                <div
+                  className={cn(
+                    "rounded-xl px-3.5 py-2.5 text-sm leading-relaxed",
+                    msg.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-sm"
+                      : "bg-muted text-foreground rounded-bl-sm"
+                  )}
+                >
+                  {msg.role === "assistant" ? (
+                    <div className="prose prose-sm max-w-none [&_p]:my-1 [&_ol]:my-1 [&_ul]:my-1 [&_li]:my-0.5 [&_table]:my-2 [&_th]:px-2 [&_th]:py-1 [&_td]:px-2 [&_td]:py-1 [&_table]:text-xs text-foreground">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
+                </div>
               </div>
             </div>
+
+            {/* Show citation sections after a citation-type assistant message */}
+            {msg.role === "assistant" && msg.citationType === "citation" && (
+              <div className="mt-4 space-y-4">
+                <CitationContent />
+                <SuggestedNextCheck />
+                <SourcesSummary />
+              </div>
+            )}
           </div>
         ))}
-
-        {/* Citation demo content — static mock */}
-        <CitationContent />
-        <SuggestedNextCheck />
-        <SourcesSummary />
 
         {isTyping && (
           <div className="flex justify-start">
