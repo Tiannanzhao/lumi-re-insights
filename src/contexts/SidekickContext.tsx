@@ -101,6 +101,9 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
         clearDashboardFilter,
         pendingNavigation,
         setPendingNavigation,
+        activeReport,
+        setActiveReport,
+        clearActiveReport,
       }}
     >
       {children}
