@@ -1,6 +1,8 @@
-import { ArrowLeft, TrendingDown, TrendingUp, FileText, AlertTriangle, HelpCircle, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, TrendingDown, TrendingUp, FileText, AlertTriangle, HelpCircle, CheckCircle2, Share2 } from "lucide-react";
 import { useSidekick } from "@/contexts/SidekickContext";
 import type { ReportData } from "@/lib/mockReportData";
+import { ExportReviewDialog } from "@/components/ExportReviewDialog";
 
 const findingIcon = {
   evidence: <CheckCircle2 className="h-3.5 w-3.5 text-accent shrink-0 mt-0.5" />,
