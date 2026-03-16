@@ -28,15 +28,15 @@ export function RevenueChart() {
         <AreaChart data={revenueData}>
           <defs>
             <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#DBEAFE" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#EFF6FF" stopOpacity={0.1} />
+              <stop offset="0%" stopColor="#4584FF" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#4584FF" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#DCDCDC" vertical={false} />
           <XAxis
             dataKey="month"
-            tick={{ fontSize: 11, fill: "#94A3B8" }}
-            axisLine={{ stroke: "#E2E8F0" }}
+            tick={{ fontSize: 11, fill: "#9D9D9F" }}
+            axisLine={{ stroke: "#DCDCDC" }}
             tickLine={false}
           />
           <YAxis
