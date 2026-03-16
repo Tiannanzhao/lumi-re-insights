@@ -51,6 +51,7 @@ interface AiSidekickProps {
 export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [showFullHistory, setShowFullHistory] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
