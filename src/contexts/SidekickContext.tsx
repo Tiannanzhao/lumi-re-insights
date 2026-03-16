@@ -6,6 +6,10 @@ export interface CardReference {
   type: "kpi" | "chart" | "table" | "breakdown" | "region" | "channel" | "ai-summary";
 }
 
+export interface DashboardFilter {
+  region?: string;
+}
+
 interface SidekickContextValue {
   selectMode: boolean;
   setSelectMode: (v: boolean) => void;
@@ -20,6 +24,11 @@ interface SidekickContextValue {
   showBackToAnalysis: boolean;
   setShowBackToAnalysis: (v: boolean) => void;
   analysisScrollRef: React.RefObject<HTMLDivElement | null>;
+  dashboardFilter: DashboardFilter;
+  setDashboardFilter: (f: DashboardFilter) => void;
+  clearDashboardFilter: () => void;
+  pendingNavigation: string | null;
+  setPendingNavigation: (path: string | null) => void;
 }
 
 const SidekickContext = createContext<SidekickContextValue | null>(null);
@@ -31,6 +40,12 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
   const [highlightedCardId, setHighlightedCardId] = useState<string | null>(null);
   const [showBackToAnalysis, setShowBackToAnalysis] = useState(false);
   const analysisScrollRef = useRef<HTMLDivElement | null>(null);
+  const [dashboardFilter, setDashboardFilter] = useState<DashboardFilter>({});
+  const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
+
+  const clearDashboardFilter = useCallback(() => {
+    setDashboardFilter({});
+  }, []);
 
   const selectCard = useCallback((card: CardReference) => {
     setSelectedCard(card);
@@ -48,12 +63,10 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
   const highlightCard = useCallback((cardId: string) => {
     setHighlightedCardId(cardId);
     setShowBackToAnalysis(true);
-    // Scroll the card into view
     setTimeout(() => {
       const el = document.getElementById(`selectable-card-${cardId}`);
       el?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
-    // Clear highlight after 2s
     setTimeout(() => {
       setHighlightedCardId(null);
     }, 2000);
@@ -75,6 +88,11 @@ export function SidekickProvider({ children }: { children: ReactNode }) {
         showBackToAnalysis,
         setShowBackToAnalysis,
         analysisScrollRef,
+        dashboardFilter,
+        setDashboardFilter,
+        clearDashboardFilter,
+        pendingNavigation,
+        setPendingNavigation,
       }}
     >
       {children}
