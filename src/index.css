@@ -6,61 +6,61 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 93%;
+    --foreground: 0 0% 10%;
 
-    --card: 200 20% 98%;
-    --card-foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 221 77% 40%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 100% 64%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 0 0% 98%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 210 18% 95%;
-    --muted-foreground: 215 16% 57%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 240 1% 62%;
 
-    --accent: 160 84% 39%;
+    --accent: 234 56% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 77% 40%;
+    --border: 0 0% 86%;
+    --input: 0 0% 83%;
+    --ring: 220 100% 64%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --surface: 200 20% 98%;
-    --surface-2: 207 23% 95%;
-    --text-primary: 222 47% 11%;
-    --text-secondary: 215 19% 35%;
-    --text-muted: 215 16% 57%;
-    --brand: 221 77% 40%;
-    --brand-light: 214 95% 93%;
-    --success: 160 84% 39%;
-    --success-light: 152 81% 91%;
-    --warning: 32 95% 44%;
+    --surface: 0 0% 98%;
+    --surface-2: 0 0% 93%;
+    --text-primary: 0 0% 10%;
+    --text-secondary: 240 1% 37%;
+    --text-muted: 240 1% 62%;
+    --brand: 220 100% 64%;
+    --brand-light: 220 100% 94%;
+    --success: 234 56% 60%;
+    --success-light: 234 56% 92%;
+    --warning: 47 100% 47%;
     --warning-light: 48 96% 89%;
     --error: 0 72% 51%;
     --error-light: 0 93% 94%;
-    --blue-gradient-start: 214 100% 97%;
-    --blue-gradient-end: 214 95% 93%;
+    --blue-gradient-start: 220 100% 97%;
+    --blue-gradient-end: 220 100% 94%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 221 77% 40%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 220 100% 64%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 214 95% 93%;
-    --sidebar-accent-foreground: 221 77% 40%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 221 77% 40%;
+    --sidebar-accent: 220 100% 94%;
+    --sidebar-accent-foreground: 220 100% 64%;
+    --sidebar-border: 0 0% 86%;
+    --sidebar-ring: 220 100% 64%;
   }
 }
 

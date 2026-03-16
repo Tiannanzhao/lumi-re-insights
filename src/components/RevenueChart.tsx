@@ -28,19 +28,19 @@ export function RevenueChart() {
         <AreaChart data={revenueData}>
           <defs>
             <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#DBEAFE" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#EFF6FF" stopOpacity={0.1} />
+              <stop offset="0%" stopColor="#4584FF" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#4584FF" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#DCDCDC" vertical={false} />
           <XAxis
             dataKey="month"
-            tick={{ fontSize: 11, fill: "#94A3B8" }}
-            axisLine={{ stroke: "#E2E8F0" }}
+            tick={{ fontSize: 11, fill: "#9D9D9F" }}
+            axisLine={{ stroke: "#DCDCDC" }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#94A3B8" }}
+            tick={{ fontSize: 11, fill: "#9D9D9F" }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v) => `$${v / 1000}K`}
@@ -48,7 +48,7 @@ export function RevenueChart() {
           <Tooltip
             contentStyle={{
               borderRadius: "0.75rem",
-              border: "1px solid #E2E8F0",
+              border: "1px solid #DCDCDC",
               boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05)",
               fontSize: "12px",
             }}
@@ -57,7 +57,7 @@ export function RevenueChart() {
           <Area
             type="monotone"
             dataKey="revenue"
-            stroke="#1E40AF"
+            stroke="#4584FF"
             strokeWidth={2}
             fill="url(#blueGradient)"
           />
