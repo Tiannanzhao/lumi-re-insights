@@ -12,7 +12,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { sidekickOpen, setSidekickOpen, toggleSidekick, selectMode } = useSidekick();
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <div className="h-screen flex w-full overflow-hidden">
         <AppSidebar
           onToggleSidekick={toggleSidekick}
