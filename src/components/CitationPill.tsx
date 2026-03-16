@@ -116,6 +116,7 @@ export interface CitationPillProps {
   reasoningSteps?: ReasoningStep[];
   onDispute?: () => void;
   targetCardId?: string;
+  externalUrl?: string;
 }
 
 export function CitationPill({
@@ -127,6 +128,7 @@ export function CitationPill({
   reasoningSteps,
   onDispute,
   targetCardId,
+  externalUrl,
 }: CitationPillProps) {
   const info = { ...sourceInfoMap[type](label), ...sourceOverrides };
   const [popOpen, setPopOpen] = useState(false);
@@ -159,7 +161,7 @@ export function CitationPill({
         collisionPadding={12}
       >
         {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} onOpenInOverview={handleOpenInOverview} />}
-        {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} />}
+        {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} externalUrl={externalUrl} />}
         {type === "inferred" && (
           <InferredPopover
             info={info}
@@ -215,7 +217,7 @@ function InternalPopover({ info, data, onOpenInOverview }: { info: SourceInfo; d
 /* ═══════════════════════════════════════════
    EXTERNAL SOURCE POPOVER
    ═══════════════════════════════════════════ */
-function ExternalPopover({ info, quote }: { info: SourceInfo; quote: ExternalQuote }) {
+function ExternalPopover({ info, quote, externalUrl }: { info: SourceInfo; quote: ExternalQuote; externalUrl?: string }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-semibold text-slate-900">{info.name}</p>
@@ -230,15 +232,18 @@ function ExternalPopover({ info, quote }: { info: SourceInfo; quote: ExternalQuo
       </div>
 
       <div className="border-t border-slate-200 my-2" />
-      <a
-        href="#"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75"
-        onClick={(e) => e.preventDefault()}
-      >
-        Open source ↗
-      </a>
+      {externalUrl ? (
+        <a
+          href={externalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-700 underline cursor-pointer hover:opacity-75"
+        >
+          Open source ↗
+        </a>
+      ) : (
+        <span className="text-xs text-muted-foreground italic">Source URL not available</span>
+      )}
     </div>
   );
 }
