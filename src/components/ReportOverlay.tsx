@@ -18,10 +18,33 @@ const findingLabel = {
 
 export function ReportOverlay() {
   const { activeReport, clearActiveReport } = useSidekick();
+  const [shareOpen, setShareOpen] = useState(false);
   if (!activeReport) return null;
   const r = activeReport as ReportData;
 
   const maxImpact = Math.max(...r.regionImpacts.map((ri) => Math.abs(ri.impact)));
+
+  const reportText = [
+    r.title,
+    `Generated ${r.generatedAt}`,
+    "",
+    "EXECUTIVE SUMMARY",
+    r.executiveSummary,
+    "",
+    "KPI COMPARISON (Q2 → Q3)",
+    ...r.kpis.map((k) => `${k.label}: ${k.q2} → ${k.q3} (${k.change})`),
+    "",
+    "REGIONAL IMPACT",
+    ...r.regionImpacts.map((ri) => `${ri.region}: ${ri.percentage}`),
+    "",
+    "CATEGORY PERFORMANCE",
+    ...r.categoryChanges.map((c) => `${c.category}: ${c.q2Revenue} → ${c.q3Revenue} (${c.change})`),
+    "",
+    "KEY FINDINGS",
+    ...r.keyFindings.map((f) => `[${f.type.toUpperCase()}] ${f.text}`),
+    "",
+    "Data Sources: " + r.dataSources.join(", "),
+  ].join("\n");
 
   return (
     <div className="h-full overflow-auto p-6 space-y-6">
