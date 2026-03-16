@@ -82,20 +82,10 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     }
   };
 
-  return (
-    <>
-      {/* Backdrop */}
-      {open && (
-        <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px] transition-opacity"
-          onClick={onClose}
-        />
-      )}
-
-      {/* Panel */}
+    return (
       <div
         className={cn(
-          "fixed right-0 top-0 z-50 h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-2xl flex flex-col transition-transform duration-300 ease-out",
+          "fixed right-0 top-0 z-30 h-full w-[420px] max-w-[90vw] bg-card border-l border-border shadow-lg flex flex-col transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -229,6 +219,5 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </div>
         </div>
       </div>
-    </>
-  );
+    );
 }
