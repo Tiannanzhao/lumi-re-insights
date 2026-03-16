@@ -7,6 +7,7 @@ import { useSidekick } from "@/contexts/SidekickContext";
 import ReactMarkdown from "react-markdown";
 import { CitationContent } from "./CitationContent";
 import { SourcesSummary } from "./SourcesSummary";
+import { MessageActions } from "./MessageActions";
 import { SuggestedNextCheck } from "./SuggestedNextCheck";
 import {
   overviewCardResponses,
@@ -220,6 +221,9 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
                     msg.content
                   )}
                 </div>
+                {msg.role === "assistant" && (
+                  <MessageActions content={msg.content} messageIndex={i} />
+                )}
               </div>
             </div>
 
