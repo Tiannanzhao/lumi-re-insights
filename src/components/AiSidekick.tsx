@@ -221,6 +221,9 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
                     msg.content
                   )}
                 </div>
+                {msg.role === "assistant" && (
+                  <MessageActions content={msg.content} messageIndex={i} />
+                )}
               </div>
             </div>
 
