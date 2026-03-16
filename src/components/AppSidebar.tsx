@@ -64,7 +64,7 @@ export function AppSidebar() {
                     className="text-muted-foreground hover:text-foreground hover:bg-surface"
                     activeClassName="bg-brand-light text-primary font-semibold">
                     
-                      <item.icon className="mr-3 h-4 w-4 text-accent-foreground bg-surface-2" />
+                      <item.icon className="mr-3 h-4 w-4 bg-surface text-primary" />
                       <span className="text-sidebar-foreground">{item.title}</span>
                     </NavLink>
                   </SidebarMenuButton>
