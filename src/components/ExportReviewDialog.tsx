@@ -124,7 +124,7 @@ export function ExportReviewDialog({
             </button>
             <span className="text-[11px] text-muted-foreground leading-snug">
               I've reviewed this content and confirm it's safe to{" "}
-              {action === "copy" ? "copy to clipboard" : "save as a pin"}.
+              {action === "copy" ? "copy to clipboard" : action === "pin" ? "save as a pin" : "share externally"}.
             </span>
           </label>
         </div>
