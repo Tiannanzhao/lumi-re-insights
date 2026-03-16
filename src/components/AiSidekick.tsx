@@ -245,7 +245,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
     setInput("");
     setIsTyping(true);
 
-    const shouldCite = isCitationTrigger(text);
+    const shouldCite = isCitationTrigger(text) || !!ref;
 
     setTimeout(() => {
       const response = getContextMockResponse(ref, text);
