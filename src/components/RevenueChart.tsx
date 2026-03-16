@@ -48,7 +48,7 @@ export function RevenueChart() {
           <Tooltip
             contentStyle={{
               borderRadius: "0.75rem",
-              border: "1px solid #E2E8F0",
+              border: "1px solid #DCDCDC",
               boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05)",
               fontSize: "12px",
             }}
