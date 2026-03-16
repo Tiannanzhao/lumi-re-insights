@@ -9,7 +9,7 @@
     --background: 0 0% 93%;
     --foreground: 0 0% 10%;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 96%;
     --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
@@ -37,7 +37,7 @@
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --surface: 0 0% 98%;
+    --surface: 0 0% 96%;
     --surface-2: 0 0% 93%;
     --text-primary: 0 0% 10%;
     --text-secondary: 240 1% 37%;

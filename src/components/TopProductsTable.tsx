@@ -23,7 +23,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export function TopProductsTable() {
   return (
-    <div className="rounded-xl border border-border bg-background shadow-sm">
+    <div className="rounded-xl border border-border bg-card shadow-sm">
       <div className="p-6 pb-4">
         <h3 className="text-sm font-semibold text-foreground">Top Products</h3>
         <p className="text-xs text-muted-foreground mt-0.5">By revenue, current period</p>

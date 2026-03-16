@@ -10,7 +10,7 @@ import {
 
 export function ChannelsTable() {
   return (
-    <div className="rounded-xl border border-border bg-background shadow-sm">
+    <div className="rounded-xl border border-border bg-card shadow-sm">
       <div className="p-6 pb-4">
         <h3 className="text-sm font-semibold text-foreground">Channel Performance</h3>
         <p className="text-xs text-muted-foreground mt-0.5">Traffic sources & conversion</p>
