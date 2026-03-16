@@ -2,11 +2,7 @@ import { Sparkles } from "lucide-react";
 
 export function AiSummary() {
   return (
-    <div className="relative overflow-hidden rounded-xl">
-      {/* Gradient border effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#4F46E5] via-[#6D5BF7] to-[#8B7CF7] p-[1px]">
-        <div className="h-full w-full rounded-[11px] bg-card" />
-      </div>
+    <div className="relative rounded-xl border border-[#7C6DF7] bg-card">
 
       <div className="relative p-5">
         {/* Header */}
