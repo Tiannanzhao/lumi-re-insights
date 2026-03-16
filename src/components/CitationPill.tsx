@@ -98,6 +98,15 @@ const pillIcons: Record<CitationType, string> = {
   none: "⚠",
 };
 
+// Map pill labels to dashboard card IDs
+const labelToCardId: Record<string, string> = {
+  "Sales DB": "regional-performance",
+  "Category Report Q3": "category-breakdown",
+  "Traffic Analytics": "channel-performance",
+  "Revenue Trend": "revenue-chart",
+  "Top Products": "top-products",
+};
+
 export interface CitationPillProps {
   type: CitationType;
   label: string;
@@ -106,6 +115,7 @@ export interface CitationPillProps {
   externalQuote?: ExternalQuote;
   reasoningSteps?: ReasoningStep[];
   onDispute?: () => void;
+  targetCardId?: string;
 }
 
 export function CitationPill({
