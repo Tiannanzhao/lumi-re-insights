@@ -2,7 +2,13 @@ import { Sparkles } from "lucide-react";
 
 export function AiSummary() {
   return (
-    <div className="relative rounded-xl border border-[#7C6DF7] bg-card">
+    <div className="relative">
+      {/* Gradient shadow */}
+      <div
+        className="absolute -inset-1 rounded-2xl blur-lg opacity-40"
+        style={{ background: "linear-gradient(135deg, #DBE7FF, #FCF45B, #C7BFFF)" }}
+      />
+      <div className="relative rounded-xl border border-[#7C6DF7] bg-card">
 
       <div className="relative p-5">
         {/* Header */}
@@ -26,6 +32,7 @@ export function AiSummary() {
           Paid Social 渠道转化率降至 2.2%，建议重新评估投放策略。
           唯一亮点是 <span className="font-medium text-foreground">Fragrance 品类</span>占比从 7% 提升至 9%，显示出逆势增长潜力。
         </p>
+      </div>
       </div>
     </div>
   );
