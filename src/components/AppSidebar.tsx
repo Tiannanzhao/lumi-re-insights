@@ -110,6 +110,27 @@ export function AppSidebar({ onToggleSidekick, sidekickOpen }: AppSidebarProps) 
           <Separator className="mb-4" />
           <TooltipProvider delayDuration={0}>
             <SidebarMenu>
+              {/* AI Sidekick Button */}
+              <SidebarMenuItem>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <SidebarMenuButton
+                      onClick={onToggleSidekick}
+                      isActive={sidekickOpen}
+                      className={`h-10 rounded-lg text-sm font-medium transition-colors ${collapsed ? "px-0 justify-center" : "px-3"}`}
+                    >
+                      <div className={`flex items-center justify-center h-4 w-4 rounded bg-gradient-to-br from-[#FCF45B] via-[#4F46E5] to-[#7C6DF7] ${collapsed ? "" : "mr-3"}`}>
+                        <Sparkles className="h-2.5 w-2.5 text-white" />
+                      </div>
+                      {!collapsed && <span className="bg-gradient-to-r from-[#4F46E5] to-[#7C6DF7] bg-clip-text text-transparent font-semibold">AI Sidekick</span>}
+                    </SidebarMenuButton>
+                  </TooltipTrigger>
+                  {collapsed && (
+                    <TooltipContent side="right">AI Sidekick</TooltipContent>
+                  )}
+                </Tooltip>
+              </SidebarMenuItem>
+
               {bottomNav.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <Tooltip>
