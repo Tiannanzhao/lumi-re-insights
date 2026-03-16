@@ -171,6 +171,13 @@ export function MessageActions({ content, messageIndex }: MessageActionsProps) {
           Feedback recorded — thanks!
         </p>
       )}
+      <ExportReviewDialog
+        open={exportDialog.open}
+        onOpenChange={(open) => setExportDialog((prev) => ({ ...prev, open }))}
+        content={content}
+        action={exportDialog.action}
+        onConfirm={handleExportConfirm}
+      />
     </div>
   );
 }
