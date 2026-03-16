@@ -376,21 +376,6 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
 
       {/* Input area */}
       <div className="p-4 border-t border-border space-y-3">
-        {/* Selected card reference chip */}
-        {selectedCard && (
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
-              <MousePointer2 className="h-3 w-3" />
-              <span>引用: {selectedCard.label}</span>
-              <button
-                onClick={clearSelection}
-                className="ml-1 hover:bg-primary/20 rounded p-0.5 transition-colors"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* Select mode banner */}
         {selectMode && (
@@ -406,29 +391,22 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </div>
         )}
 
-        <div className="flex items-end gap-2">
-          {/* Visual select toggle */}
-          <button
-            onClick={() => {
-              if (selectMode) {
-                setSelectMode(false);
-              } else {
-                clearSelection();
-                setSelectMode(true);
-              }
-            }}
-            className={cn(
-              "flex items-center gap-1.5 h-10 px-3 rounded-lg border transition-all shrink-0 text-xs font-medium",
-              selectMode
-                ? "bg-primary text-primary-foreground border-primary"
-                : selectedCard
-                  ? "bg-primary/10 text-primary border-primary/30"
-                  : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-primary/30"
-            )}
-          >
-            <MousePointer2 className="h-3.5 w-3.5" />
-            <span>选择卡片</span>
-          </button>
+        <div className="rounded-xl border border-border bg-background focus-within:ring-1 focus-within:ring-primary transition-all">
+          {/* Selected card chip inside input */}
+          {selectedCard && (
+            <div className="flex items-center px-3 pt-2.5">
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary/10 border border-primary/20 text-[11px] font-medium text-primary">
+                <MousePointer2 className="h-3 w-3" />
+                <span>{selectedCard.label}</span>
+                <button
+                  onClick={clearSelection}
+                  className="ml-0.5 hover:bg-primary/20 rounded p-0.5 transition-colors"
+                >
+                  <X className="h-2.5 w-2.5" />
+                </button>
+              </div>
+            </div>
+          )}
 
           <textarea
             ref={inputRef}
@@ -437,7 +415,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
             onKeyDown={handleKeyDown}
             placeholder={selectedCard ? `关于 ${selectedCard.label} 的问题...` : "输入你的问题..."}
             rows={1}
-            className="flex-1 resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary min-h-[40px] max-h-[120px]"
+            className="w-full resize-none bg-transparent px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none min-h-[40px] max-h-[120px]"
             style={{ height: "40px" }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
@@ -445,13 +423,37 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
               target.style.height = Math.min(target.scrollHeight, 120) + "px";
             }}
           />
-          <button
-            onClick={() => sendMessage()}
-            disabled={!input.trim() || isTyping}
-            className="flex items-center justify-center h-10 w-10 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0"
-          >
-            <Send className="h-4 w-4" />
-          </button>
+
+          {/* Bottom toolbar */}
+          <div className="flex items-center justify-between px-2 pb-2">
+            <button
+              onClick={() => {
+                if (selectMode) {
+                  setSelectMode(false);
+                } else {
+                  clearSelection();
+                  setSelectMode(true);
+                }
+              }}
+              className={cn(
+                "flex items-center gap-1.5 h-7 px-2.5 rounded-lg transition-all text-[11px] font-medium",
+                selectMode
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+            >
+              <MousePointer2 className="h-3.5 w-3.5" />
+              <span>选择卡片</span>
+            </button>
+
+            <button
+              onClick={() => sendMessage()}
+              disabled={!input.trim() || isTyping}
+              className="flex items-center justify-center h-7 w-7 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shrink-0"
+            >
+              <Send className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
