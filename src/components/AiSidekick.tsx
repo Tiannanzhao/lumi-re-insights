@@ -219,6 +219,5 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </div>
         </div>
       </div>
-    </>
-  );
+    );
 }
