@@ -61,7 +61,7 @@ export function ExportReviewDialog({
             </div>
             <div>
               <DialogTitle className="text-sm">
-                Review before {action === "copy" ? "copying" : "pinning"}
+                Review before {action === "copy" ? "copying" : action === "pin" ? "pinning" : "sharing"}
               </DialogTitle>
               <DialogDescription className="text-xs mt-0.5">
                 Check for sensitive data. Edit or redact anything before
