@@ -13,7 +13,7 @@ export function AiSummary() {
       <div className="relative p-5">
         {/* Header */}
         <div className="flex items-center gap-2.5 mb-3">
-          <div className="flex items-center justify-center h-7 w-7 rounded-lg bg-gradient-to-br from-[#4F46E5] via-[#7C6DF7] to-[#FCF45B] shadow-md shadow-[#4F46E5]/25">
+          <div className="flex items-center justify-center h-7 w-7 rounded-lg bg-gradient-to-br from-[#FCF45B] via-[#4F46E5] to-[#7C6DF7] shadow-md shadow-[#4F46E5]/25">
             <Sparkles className="h-3.5 w-3.5 text-white" />
           </div>
           <span className="text-sm font-semibold bg-gradient-to-r from-[#4F46E5] to-[#7C6DF7] bg-clip-text text-transparent">
