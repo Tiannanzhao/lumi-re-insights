@@ -20,8 +20,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                 <input
                   type="text"
                   placeholder="Search analytics..."
-                  className="h-9 w-64 rounded-lg border border-border bg-surface pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                />
+                  className="h-9 w-64 rounded-lg border border-border bg-surface pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary" />
+                
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -35,11 +35,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               </div>
             </div>
           </header>
-          <main className="flex-1 bg-surface p-6 overflow-auto">
+          <main className="flex-1 p-6 overflow-auto bg-primary-foreground">
             {children}
           </main>
         </div>
       </div>
-    </SidebarProvider>
-  );
+    </SidebarProvider>);
+
 }
