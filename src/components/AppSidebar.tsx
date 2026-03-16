@@ -41,7 +41,12 @@ const bottomNav = [
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onToggleSidekick?: () => void;
+  sidekickOpen?: boolean;
+}
+
+export function AppSidebar({ onToggleSidekick, sidekickOpen }: AppSidebarProps) {
   const location = useLocation();
   const currentPath = location.pathname;
   const isActive = (path: string) => currentPath === path;
