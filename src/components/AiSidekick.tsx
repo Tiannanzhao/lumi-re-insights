@@ -132,7 +132,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           </span>
         </div>
         <div className="flex items-center gap-1">
-          <ChatHistory />
+          <ChatHistory onExpandFullPanel={() => setShowFullHistory(true)} />
           <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
