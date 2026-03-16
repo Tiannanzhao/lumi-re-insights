@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Sparkles, MousePointer2, ArrowLeft } from "lucide-react";
-import { ChatHistory } from "./ChatHistory";
+import { ChatHistory, ChatHistoryFullPanel } from "./ChatHistory";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useSidekick } from "@/contexts/SidekickContext";
