@@ -5,7 +5,7 @@ export function AiSummary() {
     <div className="relative">
       {/* Gradient shadow */}
       <div
-        className="absolute -inset-1 rounded-2xl blur-lg opacity-40"
+        className="absolute -inset-0.5 rounded-2xl blur-md opacity-35"
         style={{ background: "linear-gradient(135deg, #DBE7FF, #FCF45B, #C7BFFF)" }}
       />
       <div className="relative rounded-xl border border-[#7C6DF7] bg-card">
