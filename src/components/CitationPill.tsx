@@ -126,9 +126,17 @@ export function CitationPill({
   externalQuote,
   reasoningSteps,
   onDispute,
+  targetCardId,
 }: CitationPillProps) {
   const info = { ...sourceInfoMap[type](label), ...sourceOverrides };
   const [popOpen, setPopOpen] = useState(false);
+  const { highlightCard } = useSidekick();
+
+  const handleOpenInOverview = () => {
+    const cardId = targetCardId || labelToCardId[label] || "regional-performance";
+    setPopOpen(false);
+    highlightCard(cardId);
+  };
 
   return (
     <Popover open={popOpen} onOpenChange={setPopOpen}>
@@ -150,7 +158,7 @@ export function CitationPill({
         sideOffset={6}
         collisionPadding={12}
       >
-        {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} />}
+        {type === "internal" && <InternalPopover info={info} data={internalData || defaultInternalData} onOpenInOverview={handleOpenInOverview} />}
         {type === "external" && <ExternalPopover info={info} quote={externalQuote || defaultExternalQuote} />}
         {type === "inferred" && (
           <InferredPopover
