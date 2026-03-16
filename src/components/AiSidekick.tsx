@@ -60,7 +60,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis, setDashboardFilter } = useSidekick();
+  const { selectMode, setSelectMode, selectedCard, clearSelection, showBackToAnalysis, setShowBackToAnalysis, setDashboardFilter, setActiveReport } = useSidekick();
   const topRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
