@@ -259,8 +259,21 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
               </div>
             </div>
 
+            {/* Show report button */}
+            {msg.role === "assistant" && msg.hasReport && (
+              <div className="mt-3">
+                <button
+                  onClick={() => setActiveReport(q3RevenueReport)}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/20 bg-primary/5 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
+                >
+                  <FileText className="h-4 w-4" />
+                  📊 View Report
+                </button>
+              </div>
+            )}
+
             {/* Show citation sections after a citation-type assistant message */}
-            {msg.role === "assistant" && msg.citationType === "citation" && (
+            {msg.role === "assistant" && msg.citationType === "citation" && !msg.hasReport && (
               <div className="mt-4 space-y-4">
                 <CitationContent />
                 <SuggestedNextCheck />
