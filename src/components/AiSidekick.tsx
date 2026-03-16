@@ -104,7 +104,7 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
           citationType: "citation" as const,
         }]);
         setIsTyping(false);
-      }, 800 + Math.random() * 600);
+      }, 3800 + Math.random() * 400);
       return;
     }
 
