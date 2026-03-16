@@ -16,7 +16,7 @@ interface ExportReviewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   content: string;
-  action: "copy" | "pin";
+  action: "copy" | "pin" | "share";
   onConfirm: (editedContent: string) => void;
 }
 
