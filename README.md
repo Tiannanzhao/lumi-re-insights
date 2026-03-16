@@ -64,6 +64,34 @@ This project is built with:
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
 
+## GitHub Pages
+
+This repository is configured to deploy to GitHub Pages from the `main` branch using GitHub Actions.
+
+After you push to GitHub:
+
+```sh
+git push origin main
+```
+
+Then in GitHub:
+
+1. Go to `Settings` -> `Pages`
+2. Set `Source` to `GitHub Actions`
+3. Wait for the `Deploy to GitHub Pages` workflow to finish
+
+Your site URL will be:
+
+```text
+https://tiannanzhao.github.io/lumi-re-insights/
+```
+
+Because GitHub Pages serves this as a project site, production routing uses hash-based URLs like:
+
+```text
+https://tiannanzhao.github.io/lumi-re-insights/#/products
+```
+
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!
