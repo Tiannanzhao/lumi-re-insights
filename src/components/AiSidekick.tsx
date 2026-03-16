@@ -293,6 +293,22 @@ export function AiSidekick({ open, onClose }: AiSidekickProps) {
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div ref={topRef} />
+
+        {/* Back to analysis breadcrumb */}
+        {showBackToAnalysis && messages.length > 0 && (
+          <button
+            onClick={() => {
+              topRef.current?.scrollIntoView({ behavior: "smooth" });
+              setShowBackToAnalysis(false);
+            }}
+            className="flex items-center gap-1 text-xs text-blue-700 cursor-pointer mb-4 pb-4 border-b border-slate-200 hover:opacity-75 transition-opacity"
+          >
+            <ArrowLeft className="h-3 w-3" />
+            ← Back to Q3 analysis
+          </button>
+        )}
+
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center px-6">
             <div className="relative mb-4">
